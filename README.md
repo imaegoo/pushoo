@@ -6,8 +6,8 @@
 
 - [ ] Qmsg
 - [x] server酱
-- [ ] Push Plus（https://www.pushplus.plus/）
-- [ ] Push Plus（https://pushplus.hxtrip.com/）
+- [ ] Push Plus - https://www.pushplus.plus/
+- [x] Push Plus - https://pushplus.hxtrip.com/
 - [ ] 钉钉
 - [ ] 企业微信
 - [ ] Telegram
@@ -20,6 +20,15 @@
 
 ## 使用方法
 
+```bash
 npm install pushoo
-pnpm install pushoo
-yarn add pushoo
+```
+
+```js
+const pushoo = require('pushoo')
+
+pushoo.notice('ServerChain', {
+  token: 'YOUR_TOKEN'
+  content: 'Hello World'
+})
+```
