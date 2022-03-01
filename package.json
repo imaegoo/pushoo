@@ -1,15 +1,30 @@
 {
   "name": "pushoo",
   "version": "0.0.1",
+  "description": "Instant Messaging Pushing SDK",
+  "author": "imaegoo <hello@imaegoo.com> (https://github.com/imaegoo)",
+  "license": "MIT",
   "main": "dist/index.js",
+  "publishConfig": {
+    "access": "public",
+    "registry": "https://registry.npmjs.org/"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/imaegoo/pushoo.git"
+  },
+  "homepage": "https://github.com/imaegoo/pushoo",
   "scripts": {
     "build": "tsc",
     "test": "ts-node src/test.ts"
   },
   "dependencies": {
-    "axios": "^0.26.0"
+    "axios": "^0.26.0",
+    "markdown-to-txt": "^2.0.0",
+    "marked": "^4.0.12"
   },
   "devDependencies": {
+    "@types/node": "^17.0.21",
     "@typescript-eslint/eslint-plugin": "^5.12.1",
     "@typescript-eslint/parser": "5.12.1",
     "eslint": "8.9.0",

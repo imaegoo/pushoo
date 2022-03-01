@@ -1,4 +1,6 @@
 import axios from 'axios';
+import marked from 'marked';
+import markdownToTxt from 'markdown-to-txt';
 
 interface CommonOptions {
   token: string
@@ -15,6 +17,35 @@ function checkParameters(options: CommonOptions, requires: string[] = []) {
   });
 }
 
+function getHtml(content: string) {
+  return marked.parse(content);
+}
+
+function getTxt(content: string) {
+  return markdownToTxt(content);
+}
+
+function getTitle(content: string) {
+  return getTxt(content).split('\n')[0];
+}
+
+/**
+ * https://qmsg.zendee.cn/
+ */
+async function noticeQmsg(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const url = 'https://qmsg.zendee.cn';
+  let msg = getTxt(options.content);
+  if (options.title) {
+    msg = `${options.title}\n${msg}`;
+  }
+  const param = new URLSearchParams({ msg });
+  const response = await axios.post(`${url}/send/${options.token}`, param.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
+  return response.data;
+}
+
 /**
  * https://sct.ftqq.com/
  */
@@ -25,13 +56,13 @@ async function noticeServerChan(options: CommonOptions) {
   if (options.token.substring(0, 3).toLowerCase() === 'sct') {
     url = 'https://sctapi.ftqq.com';
     param = new URLSearchParams({
-      title: options.title || options.content,
+      title: options.title || getTitle(options.content),
       desp: options.content,
     });
   } else {
     url = 'https://sc.ftqq.com';
     param = new URLSearchParams({
-      text: options.title || options.content,
+      text: options.title || getTitle(options.content),
       desp: options.content,
     });
   }
@@ -49,22 +80,55 @@ async function noticePushPlusHxtrip(options: CommonOptions) {
   const ppApiUrl = 'http://pushplus.hxtrip.com/send';
   const ppApiParam = {
     token: options.token,
-    title: options.title || options.content,
+    title: options.title || getTitle(options.content),
     content: options.content,
   };
   const response = await axios.post(ppApiUrl, ppApiParam);
   return response.data;
 }
 
+/**
+ * https://blog.ljcbaby.top/article/Twikoo-DingTalk/
+ */
+async function noticeDingTalk(options: CommonOptions) {
+  return {};
+}
+
+/**
+ * https://guole.fun/posts/626/
+ */
+async function noticeWeCom(options: CommonOptions) {
+  return {};
+}
+
+/**
+ * https://twikoo.js.org/QQ_API.html
+ */
+async function noticeGoCqhttp(options: CommonOptions) {
+  return {};
+}
+
 async function notice(channel: string, options: CommonOptions) {
   try {
     let data: any;
     switch (channel) {
+      case 'Qmsg':
+        data = await noticeQmsg(options);
+        break;
       case 'ServerChain':
         data = await noticeServerChan(options);
         break;
       case 'PushPlusHxtrip':
         data = await noticePushPlusHxtrip(options);
+        break;
+      case 'DingTalk':
+        data = await noticeDingTalk(options);
+        break;
+      case 'WeCom':
+        data = await noticeWeCom(options);
+        break;
+      case 'GoCqhttp':
+        data = await noticeGoCqhttp(options);
         break;
       default:
         throw new Error('not supported');
@@ -79,6 +143,10 @@ async function notice(channel: string, options: CommonOptions) {
 
 export {
   notice,
+  noticeQmsg,
   noticeServerChan,
   noticePushPlusHxtrip,
+  noticeDingTalk,
+  noticeWeCom,
+  noticeGoCqhttp,
 };
