@@ -6,7 +6,6 @@ interface CommonOptions {
   token: string
   title?: string
   content: string
-  contentType?: string
 }
 
 function checkParameters(options: CommonOptions, requires: string[] = []) {
@@ -111,23 +110,23 @@ async function noticeGoCqhttp(options: CommonOptions) {
 async function notice(channel: string, options: CommonOptions) {
   try {
     let data: any;
-    switch (channel) {
-      case 'Qmsg':
+    switch (channel.toLowerCase()) {
+      case 'qmsg':
         data = await noticeQmsg(options);
         break;
-      case 'ServerChain':
+      case 'serverchain':
         data = await noticeServerChan(options);
         break;
-      case 'PushPlusHxtrip':
+      case 'pushplushxtrip':
         data = await noticePushPlusHxtrip(options);
         break;
-      case 'DingTalk':
+      case 'dingtalk':
         data = await noticeDingTalk(options);
         break;
-      case 'WeCom':
+      case 'wecom':
         data = await noticeWeCom(options);
         break;
-      case 'GoCqhttp':
+      case 'gocqhttp':
         data = await noticeGoCqhttp(options);
         break;
       default:
