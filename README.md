@@ -18,18 +18,18 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 
 - [x] Qmsg - https://qmsg.zendee.cn/
 - [x] Server 酱 - https://sct.ftqq.com/
-- [ ] Push Plus - https://www.pushplus.plus/
-- [x] Push Plus - https://pushplus.hxtrip.com/
-- [ ] 钉钉 - https://blog.ljcbaby.top/article/Twikoo-DingTalk/
-- [ ] 企业微信 - https://guole.fun/posts/626/
-- [ ] Telegram
-- [ ] Bark
+- [x] Push Plus - https://www.pushplus.plus/
+- [x] Push Plus Hxtrip - https://pushplus.hxtrip.com/
+- [x] 钉钉 - https://open.dingtalk.com/document/group/custom-robot-access
+- [x] 企业微信 - https://guole.fun/posts/626/
+- [x] Bark - https://github.com/Finb/Bark
+- [x] go-cqhttp - https://docs.go-cqhttp.org/api/
+- [x] PushDeer - https://www.pushdeer.com/
+- [ ] iGot - https://push.hellyw.com/
 - [ ] 阿里云短信
 - [ ] 腾讯云短信
+- [ ] Telegram
 - [ ] Discord
-- [ ] iGot - https://push.hellyw.com/
-- [ ] go-cqhttp - https://twikoo.js.org/QQ_API.html
-- [ ] PushDeer - https://www.pushdeer.com/
 - [ ] Webhook
 
 ## 使用方法
@@ -43,22 +43,22 @@ npm install pushoo
 ```js
 const pushoo = require('pushoo');
 
-pushoo.notice('平台名称', {
+pushoo('平台名称', {
   token: '平台用户身份标识',
   title: '消息标题',
   content: 'Markdown 格式的推送内容'
-});
+}).then(console.log);
 ```
 
 是的，调用 pushoo 只需要传递 4 个参数！
 
 | 参数 | 说明 |
 | ---- | ---- |
-| 平台名称 | 字符串，支持：`qmsg`、`serverchain`、`pushplushxtrip`、`dingtalk`、`wecom`、`gocqhttp` |
+| 平台名称 | 字符串，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushdeer` |
 | token | 平台用户身份标识，通常情况下是一串数字和字母组合，部分平台（如 gocqhttp）见下方详细说明 |
 | title | 消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
 
-## Token 字段详细说明
+## 详细说明
 
 ……待完善

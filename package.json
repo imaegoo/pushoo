@@ -1,6 +1,6 @@
 {
   "name": "pushoo",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Instant Messaging Pushing SDK",
   "author": "imaegoo <hello@imaegoo.com> (https://github.com/imaegoo)",
   "license": "MIT",
@@ -20,6 +20,7 @@
   },
   "dependencies": {
     "axios": "^0.26.0",
+    "lodash": "^4.17.21",
     "markdown-to-txt": "^2.0.0",
     "marked": "^4.0.12"
   },

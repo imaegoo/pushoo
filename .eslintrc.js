@@ -15,7 +15,19 @@ module.exports = {
     '@typescript-eslint',
   ],
   rules: {
+    'import/extensions': [
+      'error',
+      'ignorePackages',
+      { js: 'never', ts: 'never' },
+    ],
     'no-console': 'off',
     'no-unused-vars': 'off',
+  },
+  settings: {
+    'import/resolver': {
+      node: {
+        extensions: ['.js', '.ts'],
+      },
+    },
   },
 };
