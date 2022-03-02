@@ -41,7 +41,7 @@ npm install pushoo
 现在，不论您使用什么推送平台，都无需关心他们的调用方式，只需要学习 pushoo 的调用方式即可开始发送您的第一条推送！
 
 ```js
-const pushoo = require('pushoo');
+const pushoo = require('pushoo').default;
 
 pushoo('平台名称', {
   token: '平台用户身份标识',
@@ -52,13 +52,21 @@ pushoo('平台名称', {
 
 是的，调用 pushoo 只需要传递 4 个参数！
 
-| 参数 | 说明 |
-| ---- | ---- |
-| 平台名称 | 字符串，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushdeer` |
-| token | 平台用户身份标识，通常情况下是一串数字和字母组合，部分平台（如 gocqhttp）见下方详细说明 |
-| title | 消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
-| content | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
+| 参数 | 必填 | 默认 | 说明 |
+| ---- | ---- | ---- | ---- |
+| 平台名称 | √ | 无 | 字符串，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushdeer` |
+| token | √ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，部分平台（如 gocqhttp）见下方详细说明 |
+| title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
+| content | √ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
 
 ## 详细说明
 
 ……待完善
+
+## 贡献代码
+
+```bash
+git clone https://github.com/imaegoo/pushoo.git #拉取本项目
+cd pushoo
+pnpm i
+```
