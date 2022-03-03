@@ -116,7 +116,7 @@ Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务�
 PS：获取应用Secret时，可能会将其推送到企业微信客户端，这时候微信里边是看不到的，需要在企业微信客户端里边才能看到
 5. 进入「[我的企业](https://work.weixin.qq.com/wework_admin/frame#profile)」页面，拉到最下边，可以看到企业ID，复制
 6. 进入「我的企业」 → 「[微信插件](https://work.weixin.qq.com/wework_admin/frame#profile/wxPlugin)」，拉到下边扫描二维码，关注以后即可收到推送的消息
-7. 将第 3 步和第 5 步取得的 `应用ID#应用Secret#企业ID` 拼到一起，中间用 “`#`” 号分隔，填入 pushoo 的 token 中
+7. 将第 4 步和第 5 步取得的 `应用ID#应用Secret#企业ID` 拼到一起，中间用 “`#`” 号分隔，填入 pushoo 的 token 中
 
 示例 token：`ww97a01a*****1e5f1#xHapDXmgZtlBgRQQXMb4kfh3y75Ynoubl*****l9ytE#1000005`
 
