@@ -64,7 +64,7 @@ pushoo('平台名称', {
 
 ### 💬 [Qmsg](https://qmsg.zendee.cn/) <sub>缩写: `qmsg`</sub>
 
-Qmsg 酱是 Zendee 提供的第三方 QQ 消息推送服务，免费，消息以 QQ 消息的形式推送，支持私聊推送和群推送。请注意，为避免 Qmsg 酱被 Tencent 封号，pushoo 会自动删除消息中的网址和 IP 地址。
+Qmsg 酱是 Zendee 提供的第三方 QQ 消息推送服务，免费，消息以 QQ 消息的形式推送，支持私聊推送和群推送。请注意，为避免 Qmsg 酱被 Tencent 冻结，pushoo 会自动删除消息中的网址和 IP 地址。
 
 1. 前往 https://qmsg.zendee.cn/ 并使用 QQ 登录
 2. 点击 “管理台”，选择一个 Qmsg 酱，并添加 TA 为好友
@@ -98,7 +98,7 @@ Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务�
 
 ### 💬 [钉钉](https://open.dingtalk.com/document/group/custom-robot-access) <sub>缩写: `dingtalk`</sub>
 
-钉钉是阿里推出的办公即时消息软件，官方提供了机器人 API，可实现消息推送，免费，推送的消息必须包含配置的关键字，否则推送不成功。
+钉钉是阿里推出的办公即时消息软件，官方提供了机器人 API，可实现消息推送，免费。推送的消息必须包含配置的关键字，否则推送不成功。只能在群聊中创建机器人，可选择 2 名好友组建群聊，然后移除 2 名好友（好友会收到提醒，请谨慎操作），再添加机器人。
 
 1. 根据 https://open.dingtalk.com/document/group/custom-robot-access 的说明，创建一个机器人
 2. 复制机器人的 Webhook，填入 pushoo 的 token 中
@@ -136,7 +136,7 @@ Bark 是 iOS 通知中心推送工具，可以推送消息到苹果手机上，�
 
 ### 💬 [go-cqhttp](https://docs.go-cqhttp.org/api/) <sub>缩写: `gocqhttp`</sub>
 
-go-cqhttp 是开源 QQ 机器人程序，免费，需自行搭建，插件十分丰富，但 “野生” 机器人并没有得到 Tencent 官方的支持，有封号风险。
+go-cqhttp 是开源 QQ 机器人程序，免费，需自行搭建，插件十分丰富，但 “野生” 机器人并没有得到 Tencent 官方的支持，有账号被冻结的风险。
 
 1. 前往 [go-cqhttp release](https://github.com/Mrs4s/go-cqhttp) 下载对应系统版本
 2. 此处省略安装过程，可参考 [https://docs.go-cqhttp.org/guide/quick_start.html](https://docs.go-cqhttp.org/guide/quick_start.html)
