@@ -44,11 +44,13 @@ npm install pushoo
 ```js
 const pushoo = require('pushoo').default;
 
-pushoo('平台名称', {
+const result = await pushoo('平台名称', {
   token: '平台用户身份标识',
   title: '消息标题',
   content: 'Markdown 格式的推送内容'
-}).then(console.log);
+});
+
+console.log(result);
 ```
 
 是的，调用 pushoo 只需要传递 4 个参数！
@@ -164,7 +166,7 @@ iGot 是一款聚合 APP、邮箱、微信等多种推送方式的第三方推�
 
 ### 💬 [Telegram](https://core.telegram.org/bots) <sub>缩写: `telegram`</sub>
 
-Telegram 是自有的聊天工具，支持机器人 API，免费，中国大陆服务器无法使用这种推送方式。
+Telegram 是自由的聊天工具，支持机器人 API，免费，中国大陆服务器无法使用这种推送方式。
 
 1. 通过 [@BotFather](https://t.me/BotFather) 创建机器人，并获取 `api_token`
 2. 通过 [@userinfobot](https://t.me/userinfobot) 获取接受消息对象的 `chat_id`。接受消息的对象可以是用户，频道，或群组
