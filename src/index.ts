@@ -8,7 +8,7 @@ interface CommonOptions {
   content: string
 }
 
-function checkParameters(options: CommonOptions, requires: string[] = []) {
+function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
     if (!options[require]) {
       throw new Error(`${require} is required`);
@@ -56,7 +56,7 @@ async function noticeQmsg(options: CommonOptions) {
 /**
  * https://sct.ftqq.com/
  */
-async function noticeServerChan(options: CommonOptions) {
+async function noticeServerChain(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url: string;
   let param: URLSearchParams;
@@ -132,17 +132,35 @@ async function noticeDingTalk(options: CommonOptions) {
 }
 
 /**
- * https://guole.fun/posts/626/
+ * 文档: https://developer.work.weixin.qq.com/document/path/90236
+ * 教程: https://sct.ftqq.com/forward
  */
 async function noticeWeCom(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  const WeComApiUrl = options.token;
+  const [corpid, corpsecret, agentid, touser = '@all'] = options.token.split('#');
+  checkParameters({ corpid, corpsecret, agentid }, ['corpid', 'corpsecret', 'agentid']);
+  // 获取 Access Token
+  let accessToken;
+  try {
+    const accessTokenRes = await axios.get(`https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpid}&corpsecret=${corpsecret}`);
+    accessToken = accessTokenRes.data.access_token;
+  } catch (e) {
+    console.error('获取企业微信 access token 失败，请检查 token', e);
+    return {};
+  }
+  // 发送消息
+  const url = `https://qyapi.weixin.qq.com/cgi-bin/message/send?access_token=${accessToken}`;
   let content = getTxt(options.content);
   if (options.title) {
     content = `${options.title}\n${content}`;
   }
-  const WeComApiContent = encodeURIComponent(content);
-  const response = await axios.get(WeComApiUrl + WeComApiContent);
+  const param = {
+    touser,
+    msgtype: 'text',
+    agentid,
+    text: { content },
+  };
+  const response = await axios.post(url, param);
   return response.data;
 }
 
@@ -191,44 +209,61 @@ async function noticePushdeer(options: CommonOptions) {
   return response.data;
 }
 
+async function noticeIgot(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const url = `https://push.hellyw.com/${options.token}`;
+  const response = await axios.post(url, {
+    title: options.title || getTitle(options.content),
+    content: getTxt(options.content),
+  });
+  return response.data;
+}
+
+/**
+ * 文档: https://core.telegram.org/method/messages.sendMessage
+ * 教程: https://core.telegram.org/bots#3-how-do-i-create-a-bot
+ */
+async function noticeTelegram(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const [tgToken, chatId] = options.token.split('#');
+  checkParameters({ tgToken, chatId }, ['tgToken', 'chatId']);
+  let text = options.content;
+  if (options.title) {
+    text = `${options.title}\n\n${text}`;
+  }
+  const response = await axios.post(`https://api.telegram.org/bot${tgToken}/sendMessage`, {
+    text,
+    chat_id: chatId,
+    parse_mode: 'Markdown',
+  });
+  return response.data;
+}
+
 async function notice(channel: string, options: CommonOptions) {
   try {
     let data: any;
-    switch (channel.toLowerCase()) {
-      case 'qmsg':
-        data = await noticeQmsg(options);
-        break;
-      case 'serverchain':
-        data = await noticeServerChan(options);
-        break;
-      case 'pushplus':
-        data = await noticePushPlus(options);
-        break;
-      case 'pushplushxtrip':
-        data = await noticePushPlusHxtrip(options);
-        break;
-      case 'dingtalk':
-        data = await noticeDingTalk(options);
-        break;
-      case 'wecom':
-        data = await noticeWeCom(options);
-        break;
-      case 'bark':
-        data = await noticeBark(options);
-        break;
-      case 'gocqhttp':
-        data = await noticeGoCqhttp(options);
-        break;
-      case 'pushdeer':
-        data = await noticePushdeer(options);
-        break;
-      default:
-        throw new Error('not supported');
+    const noticeFn = {
+      qmsg: noticeQmsg,
+      serverchain: noticeServerChain,
+      pushplus: noticePushPlus,
+      pushplushxtrip: noticePushPlusHxtrip,
+      dingtalk: noticeDingTalk,
+      wecom: noticeWeCom,
+      bark: noticeBark,
+      gocqhttp: noticeGoCqhttp,
+      pushdeer: noticePushdeer,
+      igot: noticeIgot,
+      telegram: noticeTelegram,
+    }[channel.toLowerCase()];
+    if (noticeFn) {
+      data = await noticeFn(options);
+    } else {
+      throw new Error(`<${channel}> is not supported`);
     }
     console.debug(`[PUSHOO] Send to <${channel}> result:`, data);
     return data;
   } catch (e) {
-    console.error('[PUSHOO] Got error:', e);
+    console.error('[PUSHOO] Got error:', e.message);
     return { error: e };
   }
 }
@@ -238,7 +273,7 @@ export default notice;
 export {
   notice,
   noticeQmsg,
-  noticeServerChan,
+  noticeServerChain,
   noticePushPlus,
   noticePushPlusHxtrip,
   noticeDingTalk,
@@ -246,4 +281,6 @@ export {
   noticeBark,
   noticeGoCqhttp,
   noticePushdeer,
+  noticeIgot,
+  noticeTelegram,
 };
