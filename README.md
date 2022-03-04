@@ -176,4 +176,4 @@ Telegram 是自由的聊天工具，支持机器人 API，免费，中国大陆�
 2. 通过 [@userinfobot](https://t.me/userinfobot) 获取接受消息对象的 `chat_id`。接受消息的对象可以是用户，频道，或群组
 3. 将第 1 步和第 2 步取得的 `api_token#chat_id` 拼到一起，中间用 “`#`” 号分隔，填入 pushoo 的 token 中
 
-示例 token：暂无
+示例 token：`5262***170:AAEzkaMjOayU13fFzcg9PI7_7*****p1iAs#958***732`
