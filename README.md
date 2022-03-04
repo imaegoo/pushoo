@@ -35,6 +35,10 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 
 ## 使用方法
 
+注：如果您是在 Twikoo 评论系统中使用，则无需搭建，直接在 Twikoo 管理面板中配置平台名称和 token 即可。
+
+安装
+
 ```bash
 npm install pushoo
 ```
@@ -57,10 +61,10 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | √ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushdeer`、`igot`、`telegram` |
-| token | √ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，部分平台（如 gocqhttp）见下方详细说明 |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushdeer`、`igot`、`telegram` |
+| token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
-| content | √ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
+| content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
 
 ## 详细说明
 
