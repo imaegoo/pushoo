@@ -2,11 +2,24 @@ import axios from 'axios';
 import marked from 'marked';
 import markdownToTxt from 'markdown-to-txt';
 
-interface CommonOptions {
+export interface CommonOptions {
   token: string
   title?: string
   content: string
 }
+
+export type ChannelType =
+  | 'qmsg'
+  | 'serverchain'
+  | 'pushplus'
+  | 'pushplushxtrip'
+  | 'dingtalk'
+  | 'wecom'
+  | 'bark'
+  | 'gocqhttp'
+  | 'pushdeer'
+  | 'igot'
+  | 'telegram'
 
 function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
@@ -239,7 +252,7 @@ async function noticeTelegram(options: CommonOptions) {
   return response.data;
 }
 
-async function notice(channel: string, options: CommonOptions) {
+async function notice(channel: ChannelType, options: CommonOptions) {
   try {
     let data: any;
     const noticeFn = {
