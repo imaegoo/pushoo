@@ -93,7 +93,7 @@ Server 酱是方糖提供的第三方多渠道推送服务，以服务号推送�
 
 Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务号推送服务，免费，存在不影响使用体验的广告。
 
-1. 前往 https://sct.ftqq.com/ 并使用微信登录
+1. 前往 https://www.pushplus.plus/ 并使用微信登录
 2. 点击 “一对一推送”，复制 “你的token” 下方的 token，填入 pushoo 的 token 中
 
 示例 token：`2832134a66df4da69ef941*****72317`
