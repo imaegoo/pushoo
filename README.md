@@ -62,7 +62,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushdeer`、`igot`、`telegram` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushoobot`、`pushdeer`、`igot`、`telegram` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
