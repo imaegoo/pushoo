@@ -17,6 +17,7 @@ export type ChannelType =
   | 'wecom'
   | 'bark'
   | 'gocqhttp'
+  | 'pushoobot'
   | 'pushdeer'
   | 'igot'
   | 'telegram'
@@ -211,6 +212,21 @@ async function noticeGoCqhttp(options: CommonOptions) {
   return response.data;
 }
 
+async function noticepushoobot(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const url = options.token;
+  let message = getTxt(options.content);
+  if (options.title) {
+    message = `https://pushoo.push.tianli0.top/send_privatemsg=${options.title}\n${message}`;
+  }
+  const param = new URLSearchParams({ message });
+  const response = await axios.post(url, param.toString());
+  const response = await axios.post(`${url}/send/${options.token}`, param.toString(), {
+    headers: { 'Content-Type': 'application/pushoo' },
+  });
+  return response.data;
+}
+
 async function noticePushdeer(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const url = 'https://api2.pushdeer.com/message/push';
@@ -293,6 +309,7 @@ export {
   noticeWeCom,
   noticeBark,
   noticeGoCqhttp,
+  noticepushoobot,
   noticePushdeer,
   noticeIgot,
   noticeTelegram,
