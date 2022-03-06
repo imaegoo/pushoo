@@ -217,7 +217,7 @@ async function noticepushoobot(options: CommonOptions) {
   const url = options.token;
   let message = getTxt(options.content);
   if (options.title) {
-    message = `http://pushoo.tianli0.top/?user_id=${options.title}\n${message}`;
+    message = `https://pushoo.tianli0.top/?user_id=${options.title}\n${message}`;
   }
   const param = new URLSearchParams({ message });
   const response = await axios.post(url, param.toString());
@@ -280,6 +280,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       wecom: noticeWeCom,
       bark: noticeBark,
       gocqhttp: noticeGoCqhttp,
+      pushoobot: noticepushoobot,
       pushdeer: noticePushdeer,
       igot: noticeIgot,
       telegram: noticeTelegram,
