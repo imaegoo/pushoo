@@ -154,7 +154,7 @@ go-cqhttp 是开源 QQ 机器人程序，免费，需自行搭建，插件十分
 
 示例 token：`http://你的IP或域名:端口号/send_private_msg?user_id=QQ号&token=你配置的token`（QQ号）或 `http://你的IP或域名:端口号/send_group_msg?group_id=群号&token=你配置的token`（QQ群）
 
-### 💬 [pushoo-bot](https://blog.tianli0.top/) <sub>缩写: `gocqhttp`</sub>
+### 💬 [pushoo-bot](https://blog.tianli0.top/) <sub>缩写: `pushoobot`</sub>
 
 go-cqhttp 是开源 QQ 机器人程序，由Tianli提供的pushoo推送服务。
 
