@@ -212,7 +212,7 @@ async function noticeGoCqhttp(options: CommonOptions) {
   return response.data;
 }
 
-async function noticepushoobot(options: CommonOptions) {
+async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const qq = options.token;
   let message = getTxt(options.content);
