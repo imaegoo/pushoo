@@ -214,8 +214,8 @@ async function noticeGoCqhttp(options: CommonOptions) {
 
 async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
+  let msg = getTxt(options.content);
   const qq = options.token;
-  let message = getTxt(options.content);
     const url = 'https://pushoo.tianli0.top/?user_id=';
   let msg = getTxt(options.content);
   if (options.title) {
