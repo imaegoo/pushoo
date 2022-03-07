@@ -214,15 +214,15 @@ async function noticeGoCqhttp(options: CommonOptions) {
 
 async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  let msg0 = getTxt(options.content);
+  let msgs = getTxt(options.content);
   const qq = options.token;
     const url = 'https://pushoo.tianli0.top/?user_id=';
-  let msg0 = getTxt(options.content);
+  let msgs = getTxt(options.content);
   if (options.title) {
-    msg = `${options.title}\n${msg}`;
+    msgs = `${options.title}\n${msgs}`;
   }
-  const param = new URLSearchParams({ msg0 });
-  const response = await axios.post(`${url}${options.token}\n${msg}`, param.toString(), {
+  const param = new URLSearchParams({ msgs });
+  const response = await axios.post(`${url}${options.token}\n${msgs}`, param.toString(), {
     headers: { 'X-Requested-By': 'pushoo' },
   });
   return response.data;
