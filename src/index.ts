@@ -222,7 +222,7 @@ async function noticepushoobot(options: CommonOptions) {
   const param = new URLSearchParams({ message });
   const response = await axios.post(url, param.toString());
   const response = await axios.post(`${url}/send/${options.token}`, param.toString(), {
-    headers: { 'Content-Type': 'application/pushoo' },
+    headers: { 'Content-Type': 'X-Requested-By': 'pushoo' },
   });
   return response.data;
 }
