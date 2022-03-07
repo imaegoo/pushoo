@@ -222,7 +222,7 @@ async function noticeatri(options: CommonOptions) {
     msg = `${options.title}\n${msg}`;
   }
   const param = new URLSearchParams({ message });
-  const response = await axios.post(`${url}${options.token}\n${message}`, param.toString(), {
+  const response = await axios.post(`${url}${options.token}\n${msg}`, param.toString(), {
     headers: { 'X-Requested-By': 'pushoo' },
   });
   return response.data;
