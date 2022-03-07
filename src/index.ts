@@ -216,12 +216,12 @@ async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let msgs = getTxt(options.content);
   const qq = options.token;
-    const url = 'https://pushoo.tianli0.top/?user_id=';
+    const url = 'https://pushoo.tianli0.top';
   let msgs = getTxt(options.content);
   if (options.title) {
     msgs = `${options.title}\n${msgs}`;
   }
-  const response = await axios.post(`${url}${options.token}\n${msgs}`, param.toString(), {
+  const response = await axios.post(`${url}/?user_id=${options.token}&message\n${msgs}`, param.toString(), {
     headers: { 'X-Requested-By': 'pushoo' },
   });
   return response.data;
