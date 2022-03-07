@@ -217,7 +217,6 @@ async function noticeatri(options: CommonOptions) {
   let msgs = getTxt(options.content);
   const qq = options.token;
     const url = 'https://pushoo.tianli0.top';
-  let msgs = getTxt(options.content);
   if (options.title) {
     msgs = `${options.title}\n${msgs}`;
   }
