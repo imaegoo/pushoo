@@ -17,7 +17,7 @@ export type ChannelType =
   | 'wecom'
   | 'bark'
   | 'gocqhttp'
-  | 'pushoobot'
+  | 'atri'
   | 'pushdeer'
   | 'igot'
   | 'telegram'
@@ -280,7 +280,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       wecom: noticeWeCom,
       bark: noticeBark,
       gocqhttp: noticeGoCqhttp,
-      pushoobot: noticepushoobot,
+      atri: noticeatri,
       pushdeer: noticePushdeer,
       igot: noticeIgot,
       telegram: noticeTelegram,
@@ -310,7 +310,7 @@ export {
   noticeWeCom,
   noticeBark,
   noticeGoCqhttp,
-  noticepushoobot,
+  noticeatri,
   noticePushdeer,
   noticeIgot,
   noticeTelegram,
