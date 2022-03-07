@@ -214,7 +214,7 @@ async function noticeGoCqhttp(options: CommonOptions) {
 
 async function noticepushoobot(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  const url = options.token;
+  const qq = options.token;
   let message = getTxt(options.content);
   if (options.title) {
     message = `https://pushoo.tianli0.top/?user_id=${options.title}\n${message}`;
