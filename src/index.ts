@@ -70,7 +70,6 @@ async function noticeQmsg(options: CommonOptions) {
 async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let msgs = getTxt(options.content);
-  const qq = options.token;
   const url = 'https://pushoo.tianli0.top';
   if (options.title) {
     msgs = `${options.title}\n${msgs}`;
