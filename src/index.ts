@@ -67,6 +67,9 @@ async function noticeQmsg(options: CommonOptions) {
   return response.data;
 }
 
+/**
+ * https://github.com/Tianli0/push-bot-api/
+ */
 async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let msgs = getTxt(options.content);
