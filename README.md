@@ -64,7 +64,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushoobot`、`pushdeer`、`igot`、`telegram` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
@@ -154,9 +154,9 @@ go-cqhttp 是开源 QQ 机器人程序，免费，需自行搭建，插件十分
 
 示例 token：`http://你的IP或域名:端口号/send_private_msg?user_id=QQ号&token=你配置的token`（QQ号）或 `http://你的IP或域名:端口号/send_group_msg?group_id=群号&token=你配置的token`（QQ群）
 
-### 💬 [atri](https://blog.tianli0.top/) <sub>缩写: `atri`</sub>
+### 💬 [atri](https://github.com/TIANLI0/push-bot-api/) <sub>缩写: `atri`</sub>
 
-go-cqhttp 是开源 QQ 机器人程序，由Tianli提供的pushoo推送服务。
+go-cqhttp 是开源 QQ 机器人程序，由[Tianli](https://blog.tianli0.top/)提供的pushoo推送服务。
 
 使用前请加机器人好友（QQ：2102916311）
 
