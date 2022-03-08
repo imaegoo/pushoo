@@ -24,7 +24,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 - [企业微信](https://guole.fun/posts/626/)
 - [Bark](https://github.com/Finb/Bark)
 - [go-cqhttp](https://docs.go-cqhttp.org/api/)
-- [pushoo-bot](https://blog.tianli0.top/)
+- [atri](https://blog.tianli0.top/)
 - [PushDeer](https://www.pushdeer.com/)
 - [iGot](https://push.hellyw.com/)
 - [Telegram](https://core.telegram.org/bots)
@@ -154,7 +154,7 @@ go-cqhttp 是开源 QQ 机器人程序，免费，需自行搭建，插件十分
 
 示例 token：`http://你的IP或域名:端口号/send_private_msg?user_id=QQ号&token=你配置的token`（QQ号）或 `http://你的IP或域名:端口号/send_group_msg?group_id=群号&token=你配置的token`（QQ群）
 
-### 💬 [pushoo-bot](https://blog.tianli0.top/) <sub>缩写: `pushoobot`</sub>
+### 💬 [atri](https://blog.tianli0.top/) <sub>缩写: `atri`</sub>
 
 go-cqhttp 是开源 QQ 机器人程序，由Tianli提供的pushoo推送服务。
 
