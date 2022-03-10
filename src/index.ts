@@ -74,10 +74,11 @@ async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let msgs = getTxt(options.content);
   const url = 'https://pushoo.tianli0.top';
+  const param = new URLSearchParams({ msgs });
   if (options.title) {
     msgs = `${options.title}\n${msgs}`;
   }
-  const response = await axios.post(`${url}/?user_id=${options.token}&message\n${msgs}`, {
+  const response = await axios.post(`${url}/?user_id=${options.token}&message\n${msgs}`, param.toString() {
     headers: { 'X-Requested-By': 'pushoo' },
   });
   return response.data;
