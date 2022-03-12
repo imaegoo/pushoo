@@ -1,6 +1,6 @@
 {
   "name": "pushoo",
-  "version": "0.0.4",
+  "version": "0.0.6",
   "description": "Instant Messaging Pushing SDK",
   "keywords": ["pushoojs", "push", "instant", "message", "notification", "twikoo"],
   "author": "imaegoo <hello@imaegoo.com> (https://github.com/imaegoo)",

@@ -12,6 +12,8 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 
 为了降低云函数复杂度，遂诞生了本项目，本项目旨在整合各大消息推送平台服务，获得统一的调用体验。
 
+同时本项目由Tianli0提供公益QQ机器人推送服务，请勿用于非法用途！（机器人QQ将不定期更换，请关注文档）
+
 ## 支持的消息推送平台
 
 - [Qmsg](https://qmsg.zendee.cn/)
@@ -22,6 +24,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 - [企业微信](https://guole.fun/posts/626/)
 - [Bark](https://github.com/Finb/Bark)
 - [go-cqhttp](https://docs.go-cqhttp.org/api/)
+- [atri](https://blog.tianli0.top/)
 - [PushDeer](https://www.pushdeer.com/)
 - [iGot](https://push.hellyw.com/)
 - [Telegram](https://core.telegram.org/bots)
@@ -61,7 +64,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`pushdeer`、`igot`、`telegram` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
@@ -150,6 +153,14 @@ go-cqhttp 是开源 QQ 机器人程序，免费，需自行搭建，插件十分
 4. 按照示例所示的 API 调用地址，填入 pushoo 的 token 中
 
 示例 token：`http://你的IP或域名:端口号/send_private_msg?user_id=QQ号&token=你配置的token`（QQ号）或 `http://你的IP或域名:端口号/send_group_msg?group_id=群号&token=你配置的token`（QQ群）
+
+### 💬 [atri](https://github.com/TIANLI0/push-bot-api/) <sub>缩写: `atri`</sub>
+
+go-cqhttp 是开源 QQ 机器人程序，由[Tianli](https://blog.tianli0.top/)提供的pushoo推送服务。
+
+使用前请加机器人好友（QQ：2102916311）
+
+示例 token：`1627236613`（QQ号）
 
 ### 💬 [PushDeer](https://www.pushdeer.com/) <sub>缩写: `pushdeer`</sub>
 
