@@ -72,13 +72,16 @@ async function noticeQmsg(options: CommonOptions) {
  */
 async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  const url = 'https://pushoo.tianli0.top/?user_id=';
+  const url = 'https://pushoo.tianli0.top/';
   let message = getTxt(options.content);
   if (options.title) {
     message = `${options.title}\n${message}`;
   }
-  const param = new URLSearchParams({ message });
-  const response = await axios.post(`${url}${options.token}&message=${message}`, param.toString(), {
+  const param = new URLSearchParams({
+    user_id: options.token,
+    message,
+  });
+  const response = await axios.post(url, param.toString(), {
     headers: { 'X-Requested-By': 'pushoo' },
   });
   return response.data;
