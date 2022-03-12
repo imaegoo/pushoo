@@ -68,18 +68,18 @@ async function noticeQmsg(options: CommonOptions) {
 }
 
 /**
- * https://github.com/Tianli0/push-bot-api/
+ * https://github.com/Tianli0/push-bot-api/ 
  */
 async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  let msgs = getTxt(options.content);
-  const url = 'https://pushoo.tianli0.top';
-  const param = new URLSearchParams({ msgs });
+  const url = 'https://pushoo.tianli0.top/?user_id=';
+  let message = getTxt(options.content);
   if (options.title) {
-    msgs = `${options.title}\n${msgs}`;
-  }
-  const response = await axios.post(`${url}/?user_id=${options.token}&message\n${msgs}`, param.toString(), {
-    headers: { 'X-Requested-By': 'pushoo' },
+    message = `${options.title}\n${message}`;
+  }  
+  const param = new URLSearchParams({ message });
+  const response = await axios.post(`${url}${options.token}&message=${message}`, param.toString(), {
+    headers: { 'X-Requested-By': 'pushoo' } ,
   });
   return response.data;
 }
