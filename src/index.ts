@@ -79,7 +79,7 @@ async function noticeatri(options: CommonOptions) {
   }  
   const param = new URLSearchParams({ message });
   const response = await axios.post(`${url}${options.token}&message=${message}`, param.toString(), {
-    headers: { 'X-Requested-By': 'pushoo' } ,
+    headers: { 'X-Requested-By': 'pushoo' },
   });
   return response.data;
 }
