@@ -68,7 +68,7 @@ async function noticeQmsg(options: CommonOptions) {
 }
 
 /**
- * https://github.com/Tianli0/push-bot-api/ 
+ * https://github.com/Tianli0/push-bot-api/
  */
 async function noticeatri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
@@ -76,7 +76,7 @@ async function noticeatri(options: CommonOptions) {
   let message = getTxt(options.content);
   if (options.title) {
     message = `${options.title}\n${message}`;
-  }  
+  }
   const param = new URLSearchParams({ message });
   const response = await axios.post(`${url}${options.token}&message=${message}`, param.toString(), {
     headers: { 'X-Requested-By': 'pushoo' },
