@@ -28,6 +28,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 - [PushDeer](https://www.pushdeer.com/)
 - [iGot](https://push.hellyw.com/)
 - [Telegram](https://core.telegram.org/bots)
+- [飞书](https://www.feishu.cn/hc/zh-CN/articles/360024984973)
 
 ## 计划支持的推送平台
 
