@@ -21,6 +21,7 @@ export type ChannelType =
   | 'pushdeer'
   | 'igot'
   | 'telegram'
+  | 'feishu'
 
 function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
@@ -70,7 +71,7 @@ async function noticeQmsg(options: CommonOptions) {
 /**
  * https://github.com/Tianli0/push-bot-api/
  */
-async function noticeatri(options: CommonOptions) {
+async function noticeAtri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const url = 'https://pushoo.tianli0.top/';
   let message = getTxt(options.content);
@@ -273,6 +274,39 @@ async function noticeTelegram(options: CommonOptions) {
   return response.data;
 }
 
+/**
+ * https://www.feishu.cn/hc/zh-CN/articles/360024984973
+ */
+async function noticeFeishu(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const v1 = 'https://open.feishu.cn/open-apis/bot/hook/';
+  const v2 = 'https://open.feishu.cn/open-apis/bot/v2/hook/';
+  let url;
+  let params;
+  if (options.token.substring(0, 4).toLowerCase() === 'http') {
+    url = options.token;
+  } else {
+    url = v2 + options.token;
+  }
+  if (url.substring(0, v1.length) === v1) {
+    params = {
+      title: options.title || getTitle(options.content),
+      text: getTxt(options.content),
+    };
+  } else {
+    let text = getTxt(options.content);
+    if (options.title) {
+      text = `${options.title}\n${text}`;
+    }
+    params = {
+      msg_type: 'text',
+      content: { text },
+    };
+  }
+  const response = await axios.post(url, params);
+  return response.data;
+}
+
 async function notice(channel: ChannelType, options: CommonOptions) {
   try {
     let data: any;
@@ -285,10 +319,11 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       wecom: noticeWeCom,
       bark: noticeBark,
       gocqhttp: noticeGoCqhttp,
-      atri: noticeatri,
+      atri: noticeAtri,
       pushdeer: noticePushdeer,
       igot: noticeIgot,
       telegram: noticeTelegram,
+      feishu: noticeFeishu,
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
@@ -315,8 +350,9 @@ export {
   noticeWeCom,
   noticeBark,
   noticeGoCqhttp,
-  noticeatri,
+  noticeAtri,
   noticePushdeer,
   noticeIgot,
   noticeTelegram,
+  noticeFeishu,
 };

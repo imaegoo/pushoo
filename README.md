@@ -64,7 +64,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchain`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
@@ -109,7 +109,7 @@ Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务�
 
 钉钉是阿里推出的办公即时消息软件，官方提供了机器人 API，可实现消息推送，免费。推送的消息必须包含配置的关键字，否则推送不成功。只能在群聊中创建机器人，可选择 2 名好友组建群聊，然后移除 2 名好友（好友会收到提醒，请谨慎操作），再添加机器人。
 
-1. 根据 https://open.dingtalk.com/document/group/custom-robot-access 的说明，创建一个机器人
+1. 根据 https://open.dingtalk.com/document/group/custom-robot-access 的说明，创建一个机器人。如果是在 Twikoo 评论系统中使用，请配置关键字为 “评论”
 2. 复制机器人的 Webhook，填入 pushoo 的 token 中
 
 示例 token：`https://oapi.dingtalk.com/robot/send?access_token=06ff1823a060af772677680d9522b547bc2685251d47bed17ddada*****41d97`（完整的 Webhook）或者 `06ff1823a060af772677680d9522b547bc2685251d47bed17ddada*****41d97`（只保留 access token）
@@ -188,3 +188,12 @@ Telegram 是自由的聊天工具，支持机器人 API，免费，中国大陆�
 3. 将第 1 步和第 2 步取得的 `api_token#chat_id` 拼到一起，中间用 “`#`” 号分隔，填入 pushoo 的 token 中
 
 示例 token：`5262***170:AAEzkaMjOayU13fFzcg9PI7_7*****p1iAs#958***732`
+
+### 💬 [飞书](https://www.feishu.cn/hc/zh-CN/articles/360024984973) <sub>缩写: `feishu`</sub>
+
+飞书是字节跳动旗下的办公即时消息软件，官方提供了机器人 API，可实现消息推送，免费。推送的消息必须包含配置的关键字，否则推送不成功。只能在群聊中创建机器人。
+
+1. 进入群组，打开会话设置，找到群机器人，并点击添加机器人，选择自定义机器人并添加。如果是在 Twikoo 评论系统中使用，请配置关键字为 “评论”
+2. 复制机器人的 Webhook，填入 pushoo 的 token 中
+
+示例 token：`https://open.feishu.cn/open-apis/bot/v2/hook/393df85f-7b2c-4ff6-bd4f-*******3ed54`（完整的 Webhook）或者 `393df85f-7b2c-4ff6-bd4f-*******3ed54`（只保留 access token）
