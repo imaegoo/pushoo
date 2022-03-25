@@ -10,6 +10,7 @@ export interface CommonOptions {
 
 export type ChannelType =
   | 'qmsg'
+  | 'serverchan'
   | 'serverchain'
   | 'pushplus'
   | 'pushplushxtrip'
@@ -91,7 +92,7 @@ async function noticeAtri(options: CommonOptions) {
 /**
  * https://sct.ftqq.com/
  */
-async function noticeServerChain(options: CommonOptions) {
+async function noticeServerChan(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url: string;
   let param: URLSearchParams;
@@ -312,7 +313,8 @@ async function notice(channel: ChannelType, options: CommonOptions) {
     let data: any;
     const noticeFn = {
       qmsg: noticeQmsg,
-      serverchain: noticeServerChain,
+      serverchan: noticeServerChan,
+      serverchain: noticeServerChan,
       pushplus: noticePushPlus,
       pushplushxtrip: noticePushPlusHxtrip,
       dingtalk: noticeDingTalk,
@@ -343,7 +345,7 @@ export default notice;
 export {
   notice,
   noticeQmsg,
-  noticeServerChain,
+  noticeServerChan,
   noticePushPlus,
   noticePushPlusHxtrip,
   noticeDingTalk,
