@@ -1,6 +1,6 @@
 {
   "name": "pushoo",
-  "version": "0.0.8",
+  "version": "0.0.9",
   "description": "Instant Messaging Pushing SDK",
   "keywords": ["pushoojs", "push", "instant", "message", "notification", "twikoo"],
   "author": "imaegoo <hello@imaegoo.com> (https://github.com/imaegoo)",
@@ -17,7 +17,7 @@
   "homepage": "https://pushoo.js.org/",
   "scripts": {
     "build": "tsc",
-    "lint": "eslint src/**",
+    "lint": "eslint src/** --fix",
     "test": "ts-node src/test.ts"
   },
   "dependencies": {
