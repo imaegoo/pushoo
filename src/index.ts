@@ -167,7 +167,7 @@ async function noticePushPlusHxtrip(options: CommonOptions) {
 
 /**
  * 文档: https://open.dingtalk.com/document/group/custom-robot-access
- -* 教程: https://blog.ljcbaby.top/article/Twikoo-DingTalk/
+ * 教程: https://blog.ljcbaby.top/article/Twikoo-DingTalk/
  */
 async function noticeDingTalk(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
@@ -232,7 +232,6 @@ async function noticeWeCom(options: CommonOptions) {
 async function noticeBark(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url = 'https://api.day.app/';
-  const jumpUrl = `?url=${options?.options?.bark?.url}` || '';
   if (options.token.substring(0, 4)
     .toLowerCase() === 'http') {
     url = options.token;
@@ -242,7 +241,10 @@ async function noticeBark(options: CommonOptions) {
   if (!url.endsWith('/')) url += '/';
   const title = encodeURIComponent(options.title || getTitle(options.content));
   const content = encodeURIComponent(getTxt(options.content));
-  const response = await axios.get(`${url}${title}/${content}/${jumpUrl}`);
+  const params = new URLSearchParams({
+    url: options?.options?.bark?.url || '',
+  });
+  const response = await axios.get(`${url}${title}/${content}/`, { params });
   return response.data;
 }
 
