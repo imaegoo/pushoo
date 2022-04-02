@@ -2,10 +2,25 @@ import axios from 'axios';
 import marked from 'marked';
 import markdownToTxt from 'markdown-to-txt';
 
+export interface NoticeOptions {
+  /**
+   * bark通知方式的参数配置
+   */
+  bark?: {
+    /**
+     * url 用于点击通知后跳转的地址
+     */
+    url?: string
+  }
+}
 export interface CommonOptions {
-  token: string
-  title?: string
-  content: string
+  token: string;
+  title?: string;
+  content: string;
+  /**
+   * 扩展选项
+   */
+  options?: NoticeOptions;
 }
 
 export type ChannelType =
@@ -41,13 +56,15 @@ function getTxt(content: string) {
 }
 
 function getTitle(content: string) {
-  return getTxt(content).split('\n')[0];
+  return getTxt(content)
+    .split('\n')[0];
 }
 
 function removeUrlAndIp(content: string) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const ipRegex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/g;
-  return content.replace(urlRegex, '').replace(ipRegex, '');
+  return content.replace(urlRegex, '')
+    .replace(ipRegex, '');
 }
 
 /**
@@ -96,7 +113,8 @@ async function noticeServerChan(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url: string;
   let param: URLSearchParams;
-  if (options.token.substring(0, 3).toLowerCase() === 'sct') {
+  if (options.token.substring(0, 3)
+    .toLowerCase() === 'sct') {
     url = 'https://sctapi.ftqq.com';
     param = new URLSearchParams({
       title: options.title || getTitle(options.content),
@@ -149,12 +167,13 @@ async function noticePushPlusHxtrip(options: CommonOptions) {
 
 /**
  * 文档: https://open.dingtalk.com/document/group/custom-robot-access
--* 教程: https://blog.ljcbaby.top/article/Twikoo-DingTalk/
+ -* 教程: https://blog.ljcbaby.top/article/Twikoo-DingTalk/
  */
 async function noticeDingTalk(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url = 'https://oapi.dingtalk.com/robot/send?access_token=';
-  if (options.token.substring(0, 4).toLowerCase() === 'http') {
+  if (options.token.substring(0, 4)
+    .toLowerCase() === 'http') {
     url = options.token;
   } else {
     url += options.token;
@@ -163,7 +182,10 @@ async function noticeDingTalk(options: CommonOptions) {
   if (options.title) {
     content = `${options.title}\n${content}`;
   }
-  const response = await axios.post(url, { msgtype: 'text', text: { content } });
+  const response = await axios.post(url, {
+    msgtype: 'text',
+    text: { content },
+  });
   return response.data;
 }
 
@@ -174,7 +196,11 @@ async function noticeDingTalk(options: CommonOptions) {
 async function noticeWeCom(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const [corpid, corpsecret, agentid, touser = '@all'] = options.token.split('#');
-  checkParameters({ corpid, corpsecret, agentid }, ['corpid', 'corpsecret', 'agentid']);
+  checkParameters({
+    corpid,
+    corpsecret,
+    agentid,
+  }, ['corpid', 'corpsecret', 'agentid']);
   // 获取 Access Token
   let accessToken;
   try {
@@ -206,7 +232,9 @@ async function noticeWeCom(options: CommonOptions) {
 async function noticeBark(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url = 'https://api.day.app/';
-  if (options.token.substring(0, 4).toLowerCase() === 'http') {
+  const jumpUrl = `?url=${options?.options?.bark?.url}` || '';
+  if (options.token.substring(0, 4)
+    .toLowerCase() === 'http') {
     url = options.token;
   } else {
     url += options.token;
@@ -214,7 +242,7 @@ async function noticeBark(options: CommonOptions) {
   if (!url.endsWith('/')) url += '/';
   const title = encodeURIComponent(options.title || getTitle(options.content));
   const content = encodeURIComponent(getTxt(options.content));
-  const response = await axios.get(`${url}${title}/${content}/`);
+  const response = await axios.get(`${url}${title}/${content}/${jumpUrl}`);
   return response.data;
 }
 
@@ -262,7 +290,10 @@ async function noticeIgot(options: CommonOptions) {
 async function noticeTelegram(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const [tgToken, chatId] = options.token.split('#');
-  checkParameters({ tgToken, chatId }, ['tgToken', 'chatId']);
+  checkParameters({
+    tgToken,
+    chatId,
+  }, ['tgToken', 'chatId']);
   let text = options.content;
   if (options.title) {
     text = `${options.title}\n\n${text}`;
@@ -284,7 +315,8 @@ async function noticeFeishu(options: CommonOptions) {
   const v2 = 'https://open.feishu.cn/open-apis/bot/v2/hook/';
   let url;
   let params;
-  if (options.token.substring(0, 4).toLowerCase() === 'http') {
+  if (options.token.substring(0, 4)
+    .toLowerCase() === 'http') {
     url = options.token;
   } else {
     url = v2 + options.token;
