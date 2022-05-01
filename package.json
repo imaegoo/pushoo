@@ -1,8 +1,15 @@
 {
   "name": "pushoo",
-  "version": "0.0.9",
+  "version": "0.0.10",
   "description": "Instant Messaging Pushing SDK",
-  "keywords": ["pushoojs", "push", "instant", "message", "notification", "twikoo"],
+  "keywords": [
+    "pushoojs",
+    "push",
+    "instant",
+    "message",
+    "notification",
+    "twikoo"
+  ],
   "author": "imaegoo <hello@imaegoo.com> (https://github.com/imaegoo)",
   "license": "MIT",
   "main": "dist/index.js",
@@ -23,8 +30,8 @@
   "dependencies": {
     "axios": "^0.26.0",
     "lodash": "^4.17.21",
-    "markdown-to-txt": "^2.0.0",
-    "marked": "^4.0.12"
+    "markdown-to-txt": "^2.0.1",
+    "marked": "^4.0.14"
   },
   "devDependencies": {
     "@types/node": "^17.0.21",

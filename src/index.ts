@@ -1,5 +1,5 @@
 import axios from 'axios';
-import marked from 'marked';
+import { marked } from 'marked';
 import markdownToTxt from 'markdown-to-txt';
 
 export interface NoticeOptions {
@@ -158,8 +158,8 @@ async function noticePushPlusHxtrip(options: CommonOptions) {
   const ppApiParam = {
     token: options.token,
     title: options.title || getTitle(options.content),
-    content: options.content,
-    template: 'markdown',
+    content: getHtml(options.content),
+    template: 'html',
   };
   const response = await axios.post(ppApiUrl, ppApiParam);
   return response.data;
