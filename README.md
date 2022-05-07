@@ -93,7 +93,7 @@ interface NoticeOptions {
 
 Qmsg 酱是 Zendee 提供的第三方 QQ 消息推送服务，免费，消息以 QQ 消息的形式推送，支持私聊推送和群推送。请注意，为避免 Qmsg 酱被 Tencent 冻结，pushoo 会自动删除消息中的网址和 IP 地址。
 
-1. 前往 https://qmsg.zendee.cn/ 并使用 QQ 登录
+1. 前往 [https://qmsg.zendee.cn/](https://qmsg.zendee.cn/) 并使用 QQ 登录
 2. 点击 “管理台”，选择一个 Qmsg 酱，并添加 TA 为好友
 3. 在 “我的QQ列表” 中添加自己的 QQ 号
 4. 复制 “我的KEY” 下方的 key，填入 pushoo 的 token 中
@@ -104,7 +104,7 @@ Qmsg 酱是 Zendee 提供的第三方 QQ 消息推送服务，免费，消息以
 
 Server 酱是方糖提供的第三方多渠道推送服务，以服务号推送起家，稳定运行多年，免费收费并存，特色功能较多。
 
-1. 前往 https://sct.ftqq.com/ 并使用微信登录
+1. 前往 [https://sct.ftqq.com/](https://sct.ftqq.com/) 并使用微信登录
 2. 点击 “消息通道”，设置合适的消息通道并保存
 2. 点击 “SendKey”，复制 “SendKey” 下方的 key，填入 pushoo 的 token 中
 
@@ -112,22 +112,25 @@ Server 酱是方糖提供的第三方多渠道推送服务，以服务号推送�
 
 ### 💬 [Push Plus](https://www.pushplus.plus/) <sub>缩写: `pushplus`</sub>
 
-Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务号推送服务，免费，存在不影响使用体验的广告。
+Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务号推送服务，免费版存在不影响使用的广告，会员特权如下：[https://www.pushplus.plus/vip.html](https://www.pushplus.plus/vip.html)。
 
-1. 前往 https://www.pushplus.plus/ 并使用微信登录
+1. 前往 [https://www.pushplus.plus/](https://www.pushplus.plus/) 并使用微信登录
 2. 点击 “一对一推送”，复制 “你的token” 下方的 token，填入 pushoo 的 token 中
 
 示例 token：`2832134a66df4da69ef941*****72317`
 
 ### 💬 [Push Plus Hxtrip](https://pushplus.hxtrip.com/) <sub>缩写: `pushplushxtrip`</sub>
 
-已失效，请使用 [Push Plus](#Push-Plus)。
+Push Plus Hxtrip 是中道（苏州）旅游网络科技有限公司提供的第三方微信服务号推送服务，免费无广告
+
+1. 前往 [https://pushplus.hxtrip.com/message](https://pushplus.hxtrip.com/message) 并使用微信扫码登录
+2. 复制 “您的Token” 下方的 Token，填入 pushoo 的 token 中
 
 ### 💬 [钉钉](https://open.dingtalk.com/document/group/custom-robot-access) <sub>缩写: `dingtalk`</sub>
 
 钉钉是阿里推出的办公即时消息软件，官方提供了机器人 API，可实现消息推送，免费。推送的消息必须包含配置的关键字，否则推送不成功。只能在群聊中创建机器人，可选择 2 名好友组建群聊，然后移除 2 名好友（好友会收到提醒，请谨慎操作），再添加机器人。
 
-1. 根据 https://open.dingtalk.com/document/group/custom-robot-access 的说明，创建一个机器人。如果是在 Twikoo 评论系统中使用，请配置关键字为 “评论”
+1. 根据 [https://open.dingtalk.com/document/group/custom-robot-access](https://open.dingtalk.com/document/group/custom-robot-access) 的说明，创建一个机器人。如果是在 Twikoo 评论系统中使用，请配置关键字为 “评论”
 2. 复制机器人的 Webhook，填入 pushoo 的 token 中
 
 示例 token：`https://oapi.dingtalk.com/robot/send?access_token=06ff1823a060af772677680d9522b547bc2685251d47bed17ddada*****41d97`（完整的 Webhook）或者 `06ff1823a060af772677680d9522b547bc2685251d47bed17ddada*****41d97`（只保留 access token）
@@ -193,7 +196,7 @@ PushDeer 是方糖一个开源的无 APP 推送解决方案，支持 iOS 14+ 轻
 
 iGot 是一款聚合 APP、邮箱、微信等多种推送方式的第三方推送平台，免费，存在影响体验的广告。
 
-1. 根据 https://push.hellyw.com/doc/ 的说明，获取推送 key，填入 pushoo 的 token 中
+1. 根据 [https://push.hellyw.com/doc/](https://push.hellyw.com/doc/) 的说明，获取推送 key，填入 pushoo 的 token 中
 
 示例 token：`621f3b1dd2eba1*****101d9`
 
