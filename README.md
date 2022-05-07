@@ -126,6 +126,8 @@ Push Plus Hxtrip 是中道（苏州）旅游网络科技有限公司提供的第
 1. 前往 [https://pushplus.hxtrip.com/message](https://pushplus.hxtrip.com/message) 并使用微信登录
 2. 复制 “您的Token” 下方的 Token，填入 pushoo 的 token 中
 
+示例 token：`2a00acb27e414ea4bf9d19*****08986`
+
 ### 💬 [钉钉](https://open.dingtalk.com/document/group/custom-robot-access) <sub>缩写: `dingtalk`</sub>
 
 钉钉是阿里推出的办公即时消息软件，官方提供了机器人 API，可实现消息推送，免费。推送的消息必须包含配置的关键字，否则推送不成功。只能在群聊中创建机器人，可选择 2 名好友组建群聊，然后移除 2 名好友（好友会收到提醒，请谨慎操作），再添加机器人。
