@@ -123,7 +123,7 @@ Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务�
 
 Push Plus Hxtrip 是中道（苏州）旅游网络科技有限公司提供的第三方微信服务号推送服务，免费无广告
 
-1. 前往 [https://pushplus.hxtrip.com/message](https://pushplus.hxtrip.com/message) 并使用微信扫码登录
+1. 前往 [https://pushplus.hxtrip.com/message](https://pushplus.hxtrip.com/message) 并使用微信登录
 2. 复制 “您的Token” 下方的 Token，填入 pushoo 的 token 中
 
 ### 💬 [钉钉](https://open.dingtalk.com/document/group/custom-robot-access) <sub>缩写: `dingtalk`</sub>
