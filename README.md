@@ -112,7 +112,7 @@ Server 酱是方糖提供的第三方多渠道推送服务，以服务号推送�
 
 ### 💬 [Push Plus](https://www.pushplus.plus/) <sub>缩写: `pushplus`</sub>
 
-Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务号推送服务，免费版存在不影响使用的广告，会员特权如下：[https://www.pushplus.plus/vip.html](https://www.pushplus.plus/vip.html)。
+Push Plus 是苏州破壳网络科技有限公司提供的第三方微信服务号推送服务，免费版存在不影响使用的广告，会员版特权如下：[https://www.pushplus.plus/vip.html](https://www.pushplus.plus/vip.html)。
 
 1. 前往 [https://www.pushplus.plus/](https://www.pushplus.plus/) 并使用微信登录
 2. 点击 “一对一推送”，复制 “你的token” 下方的 token，填入 pushoo 的 token 中
