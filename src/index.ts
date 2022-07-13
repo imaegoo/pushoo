@@ -91,7 +91,7 @@ async function noticeQmsg(options: CommonOptions) {
  */
 async function noticeAtri(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  const url = 'https://pushoo.tianli0.top/';
+  const url = 'http://pushoo.tianli0.top/';
   let message = getTxt(options.content);
   if (options.title) {
     message = `${options.title}\n${message}`;
