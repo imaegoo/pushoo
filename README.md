@@ -29,6 +29,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 - [iGot](https://push.hellyw.com/)
 - [Telegram](https://core.telegram.org/bots)
 - [飞书](https://www.feishu.cn/hc/zh-CN/articles/360024984973)
+- [IFTTT](https://ifttt.com/maker_webhooks)
 
 ## 计划支持的推送平台
 
@@ -65,7 +66,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu`、`ifttt` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
@@ -81,11 +82,18 @@ interface NoticeOptions {
      * url 用于点击通知后跳转的地址
      */
     url?: string
+  },
+  /**
+   * IFTTT通知方式的参数配置
+   */
+  ifttt?: {
+    event: string
+    value1?: string
+    value2?: string
+    value3?: string
   }
 }
 ```
-
-
 
 ## 详细说明
 
@@ -220,3 +228,13 @@ Telegram 是自由的聊天工具，支持机器人 API，免费，中国大陆�
 2. 复制机器人的 Webhook，填入 pushoo 的 token 中
 
 示例 token：`https://open.feishu.cn/open-apis/bot/v2/hook/393df85f-7b2c-4ff6-bd4f-*******3ed54`（完整的 Webhook）或者 `393df85f-7b2c-4ff6-bd4f-*******3ed54`（只保留 access token）
+
+
+### 💬 [IFTTT](https://ifttt.com/maker_webhooks) <sub>缩写: `ifttt`</sub>
+
+IFTTT Webhooks推送，免费。
+
+1. 首先打开http://ifttt.com/maker，确保你的WebHooks服务是可以用的；
+2. 点击 My Applets，点击New Applet；
+3. if this then that, this选择WebHooks，Trigger选择Receive a web request，Event Name填一个有意义的，如push；
+4. if this then that, that选择Notification，参数填Value1 、Value2、Value3
