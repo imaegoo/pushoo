@@ -362,7 +362,7 @@ async function noticeIfttt(options: CommonOptions) {
   checkParameters(options, ['token', 'options', 'content']);
   checkParameters(options.options, ['ifttt']);
 
-  const url = `https://maker.ifttt.com/trigger/${options!.options!.ifttt.event}/with/key/${
+  const url = `https://maker.ifttt.com/trigger/${options.options.ifttt.event}/with/key/${
     options.token
   }`;
 
