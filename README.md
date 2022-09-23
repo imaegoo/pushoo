@@ -42,6 +42,8 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 
 注：如果您是在 Twikoo 评论系统中使用，则无需搭建，直接在 Twikoo 管理面板中配置平台名称和 token 即可。
 
+如果您是在 GitHub Actions 中使用，可以使用 [funnyzak/pushoo-action](https://github.com/funnyzak/pushoo-action)。
+
 安装
 
 ```bash
