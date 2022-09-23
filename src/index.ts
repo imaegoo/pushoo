@@ -207,13 +207,13 @@ async function noticeWeCom(options: CommonOptions) {
       corpsecret,
       agentid,
     },
-    ['corpid', 'corpsecret', 'agentid']
+    ['corpid', 'corpsecret', 'agentid'],
   );
   // 获取 Access Token
   let accessToken;
   try {
     const accessTokenRes = await axios.get(
-      `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpid}&corpsecret=${corpsecret}`
+      `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpid}&corpsecret=${corpsecret}`,
     );
     accessToken = accessTokenRes.data.access_token;
   } catch (e) {
@@ -306,7 +306,7 @@ async function noticeTelegram(options: CommonOptions) {
       tgToken,
       chatId,
     },
-    ['tgToken', 'chatId']
+    ['tgToken', 'chatId'],
   );
   let text = options.content;
   if (options.title) {
@@ -360,16 +360,16 @@ async function noticeFeishu(options: CommonOptions) {
 async function noticeIfttt(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
 
-  const [token, event_name] = options.token.split('#');
+  const [token, eventName] = options.token.split('#');
   checkParameters(
     {
       token,
-      event_name,
+      eventName,
     },
-    ['token', 'event_name']
+    ['token', 'eventName'],
   );
 
-  const url = `https://maker.ifttt.com/trigger/${event_name}/with/key/${token}`;
+  const url = `https://maker.ifttt.com/trigger/${eventName}/with/key/${token}`;
 
   const response = await axios.post(
     url,
@@ -380,7 +380,7 @@ async function noticeIfttt(options: CommonOptions) {
     },
     {
       headers: { 'Content-Type': 'application/json' },
-    }
+    },
   );
   return response.data;
 }
