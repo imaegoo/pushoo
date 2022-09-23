@@ -1,4 +1,4 @@
-import axios, { Method } from 'axios';
+import axios from 'axios';
 import { marked } from 'marked';
 import markdownToTxt from 'markdown-to-txt';
 
