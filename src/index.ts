@@ -16,7 +16,6 @@ export interface NoticeOptions {
    * IFTTT通知方式的参数配置
    */
   ifttt?: {
-    event: string;
     value1?: string;
     value2?: string;
     value3?: string;
@@ -359,19 +358,25 @@ async function noticeFeishu(options: CommonOptions) {
  * http://ift.tt/webhooks_faq
  */
 async function noticeIfttt(options: CommonOptions) {
-  checkParameters(options, ['token', 'options', 'content']);
-  checkParameters(options.options, ['ifttt']);
+  checkParameters(options, ['token', 'content']);
 
-  const url = `https://maker.ifttt.com/trigger/${options.options.ifttt.event}/with/key/${
-    options.token
-  }`;
+  const [token, event_name] = options.token.split('#');
+  checkParameters(
+    {
+      token,
+      event_name,
+    },
+    ['token', 'event_name']
+  );
+
+  const url = `https://maker.ifttt.com/trigger/${event_name}/with/key/${token}`;
 
   const response = await axios.post(
     url,
     {
-      value1: options.options.ifttt.value1 || getTxt(options.title),
-      value2: options.options.ifttt.value2 || getTxt(options.content),
-      value3: options.options.ifttt.value3,
+      value1: options.options?.ifttt?.value1 || getTxt(options.title),
+      value2: options.options?.ifttt?.value2 || getTxt(options.content),
+      value3: options.options?.ifttt?.value3,
     },
     {
       headers: { 'Content-Type': 'application/json' },
