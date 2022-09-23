@@ -87,7 +87,6 @@ interface NoticeOptions {
    * IFTTT通知方式的参数配置
    */
   ifttt?: {
-    event: string
     value1?: string
     value2?: string
     value3?: string
@@ -229,12 +228,16 @@ Telegram 是自由的聊天工具，支持机器人 API，免费，中国大陆�
 
 示例 token：`https://open.feishu.cn/open-apis/bot/v2/hook/393df85f-7b2c-4ff6-bd4f-*******3ed54`（完整的 Webhook）或者 `393df85f-7b2c-4ff6-bd4f-*******3ed54`（只保留 access token）
 
-
 ### 💬 [IFTTT](https://ifttt.com/maker_webhooks) <sub>缩写: `ifttt`</sub>
 
 IFTTT Webhooks推送，免费。
 
-1. 首先打开http://ifttt.com/maker，确保你的WebHooks服务是可以用的；
-2. 点击 My Applets，点击New Applet；
-3. if this then that, this选择WebHooks，Trigger选择Receive a web request，Event Name填一个有意义的，如push；
-4. if this then that, that选择Notification，参数填Value1 、Value2、Value3
+1. 首先打开 [http://ifttt.com/maker](http://ifttt.com/maker)，确保你的WebHooks服务是可以用；
+2. 点击 `Document` 获取你的 **Key**, 点击 `Create` 开始创建一个Applet；
+3. If this Then that, this选择WebHooks，Trigger选择Receive a web request，Event Name填一个有意义的，如 `push`；
+4. if this then that, that选择Notification，参数填Value1 、Value2、Value3;
+5. 将 2 步获取的 **key** 和 第 3 步设置的 **Event Name** 拼接到一起，中间用 “`#`” 号分隔，填入 pushoo 的 token 中。
+
+示例 token：`d-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#push`
+
+PS: title 和 content 会分别对应 Value1 和 Value2，如果要设置 Value3 请在 options 设置
