@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { Method } from 'axios';
 import { marked } from 'marked';
 import markdownToTxt from 'markdown-to-txt';
 
@@ -10,8 +10,16 @@ export interface NoticeOptions {
     /**
      * url 用于点击通知后跳转的地址
      */
-    url?: string
-  }
+    url?: string;
+  };
+  /**
+   * IFTTT通知方式的参数配置
+   */
+  ifttt?: {
+    value1?: string;
+    value2?: string;
+    value3?: string;
+  };
 }
 export interface CommonOptions {
   token: string;
@@ -38,6 +46,7 @@ export type ChannelType =
   | 'igot'
   | 'telegram'
   | 'feishu'
+  | 'ifttt';
 
 function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
@@ -56,15 +65,13 @@ function getTxt(content: string) {
 }
 
 function getTitle(content: string) {
-  return getTxt(content)
-    .split('\n')[0];
+  return getTxt(content).split('\n')[0];
 }
 
 function removeUrlAndIp(content: string) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const ipRegex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/g;
-  return content.replace(urlRegex, '')
-    .replace(ipRegex, '');
+  return content.replace(urlRegex, '').replace(ipRegex, '');
 }
 
 /**
@@ -113,8 +120,7 @@ async function noticeServerChan(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url: string;
   let param: URLSearchParams;
-  if (options.token.substring(0, 3)
-    .toLowerCase() === 'sct') {
+  if (options.token.substring(0, 3).toLowerCase() === 'sct') {
     url = 'https://sctapi.ftqq.com';
     param = new URLSearchParams({
       title: options.title || getTitle(options.content),
@@ -172,8 +178,7 @@ async function noticePushPlusHxtrip(options: CommonOptions) {
 async function noticeDingTalk(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url = 'https://oapi.dingtalk.com/robot/send?access_token=';
-  if (options.token.substring(0, 4)
-    .toLowerCase() === 'http') {
+  if (options.token.substring(0, 4).toLowerCase() === 'http') {
     url = options.token;
   } else {
     url += options.token;
@@ -196,15 +201,20 @@ async function noticeDingTalk(options: CommonOptions) {
 async function noticeWeCom(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const [corpid, corpsecret, agentid, touser = '@all'] = options.token.split('#');
-  checkParameters({
-    corpid,
-    corpsecret,
-    agentid,
-  }, ['corpid', 'corpsecret', 'agentid']);
+  checkParameters(
+    {
+      corpid,
+      corpsecret,
+      agentid,
+    },
+    ['corpid', 'corpsecret', 'agentid'],
+  );
   // 获取 Access Token
   let accessToken;
   try {
-    const accessTokenRes = await axios.get(`https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpid}&corpsecret=${corpsecret}`);
+    const accessTokenRes = await axios.get(
+      `https://qyapi.weixin.qq.com/cgi-bin/gettoken?corpid=${corpid}&corpsecret=${corpsecret}`,
+    );
     accessToken = accessTokenRes.data.access_token;
   } catch (e) {
     console.error('获取企业微信 access token 失败，请检查 token', e);
@@ -232,8 +242,7 @@ async function noticeWeCom(options: CommonOptions) {
 async function noticeBark(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url = 'https://api.day.app/';
-  if (options.token.substring(0, 4)
-    .toLowerCase() === 'http') {
+  if (options.token.substring(0, 4).toLowerCase() === 'http') {
     url = options.token;
   } else {
     url += options.token;
@@ -292,10 +301,13 @@ async function noticeIgot(options: CommonOptions) {
 async function noticeTelegram(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const [tgToken, chatId] = options.token.split('#');
-  checkParameters({
-    tgToken,
-    chatId,
-  }, ['tgToken', 'chatId']);
+  checkParameters(
+    {
+      tgToken,
+      chatId,
+    },
+    ['tgToken', 'chatId'],
+  );
   let text = options.content;
   if (options.title) {
     text = `${options.title}\n\n${text}`;
@@ -317,8 +329,7 @@ async function noticeFeishu(options: CommonOptions) {
   const v2 = 'https://open.feishu.cn/open-apis/bot/v2/hook/';
   let url;
   let params;
-  if (options.token.substring(0, 4)
-    .toLowerCase() === 'http') {
+  if (options.token.substring(0, 4).toLowerCase() === 'http') {
     url = options.token;
   } else {
     url = v2 + options.token;
@@ -342,6 +353,38 @@ async function noticeFeishu(options: CommonOptions) {
   return response.data;
 }
 
+/**
+ * https://ifttt.com/maker_webhooks
+ * http://ift.tt/webhooks_faq
+ */
+async function noticeIfttt(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+
+  const [token, eventName] = options.token.split('#');
+  checkParameters(
+    {
+      token,
+      eventName,
+    },
+    ['token', 'eventName'],
+  );
+
+  const url = `https://maker.ifttt.com/trigger/${eventName}/with/key/${token}`;
+
+  const response = await axios.post(
+    url,
+    {
+      value1: options.options?.ifttt?.value1 || getTxt(options.title),
+      value2: options.options?.ifttt?.value2 || getTxt(options.content),
+      value3: options.options?.ifttt?.value3,
+    },
+    {
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+  return response.data;
+}
+
 async function notice(channel: ChannelType, options: CommonOptions) {
   try {
     let data: any;
@@ -360,6 +403,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       igot: noticeIgot,
       telegram: noticeTelegram,
       feishu: noticeFeishu,
+      ifttt: noticeIfttt,
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
@@ -391,4 +435,5 @@ export {
   noticeIgot,
   noticeTelegram,
   noticeFeishu,
+  noticeIfttt,
 };
