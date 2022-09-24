@@ -392,7 +392,7 @@ async function noticeIfttt(options: CommonOptions) {
  */
 async function noticeWecombot(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  let url = `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${options.token}`;
+  const url = `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${options.token}`;
 
   const response = await axios.post(
     url,
