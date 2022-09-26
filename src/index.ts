@@ -46,7 +46,8 @@ export type ChannelType =
   | 'igot'
   | 'telegram'
   | 'feishu'
-  | 'ifttt';
+  | 'ifttt'
+  | 'wecombot';
 
 function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
@@ -385,6 +386,30 @@ async function noticeIfttt(options: CommonOptions) {
   return response.data;
 }
 
+/**
+ * 文档: https://developer.work.weixin.qq.com/document/path/91770
+ * 教程: https://developer.work.weixin.qq.com/tutorial/detail/54
+ */
+async function noticeWecombot(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const url = `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${options.token}`;
+
+  const response = await axios.post(
+    url,
+    {
+      msgtype: 'markdown',
+      markdown: {
+        content: options.content,
+      },
+    },
+    {
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+
+  return response.data;
+}
+
 async function notice(channel: ChannelType, options: CommonOptions) {
   try {
     let data: any;
@@ -404,6 +429,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       telegram: noticeTelegram,
       feishu: noticeFeishu,
       ifttt: noticeIfttt,
+      wecombot: noticeWecombot,
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
@@ -436,4 +462,5 @@ export {
   noticeTelegram,
   noticeFeishu,
   noticeIfttt,
+  noticeWecombot,
 };

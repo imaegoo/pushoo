@@ -22,6 +22,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 - [Push Plus Hxtrip](https://pushplus.hxtrip.com/)
 - [钉钉](https://open.dingtalk.com/document/group/custom-robot-access)
 - [企业微信](https://guole.fun/posts/626/)
+- [企业微信群机器人](https://developer.work.weixin.qq.com/document/path/91770)
 - [Bark](https://github.com/Finb/Bark)
 - [go-cqhttp](https://docs.go-cqhttp.org/api/)
 - [atri](https://blog.tianli0.top/)
@@ -68,7 +69,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu`、`ifttt` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu`、`ifttt`、`wecombot` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
@@ -243,3 +244,12 @@ IFTTT Webhooks推送，免费。
 示例 token：`d-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx#push`
 
 PS: title 和 content 会分别对应 Value1 和 Value2，如果要设置 Value3 请在 options 设置
+
+### 💬 [WECOMBOT](https://developer.work.weixin.qq.com/document/path/91770) <sub>缩写: `wecombot`</sub>
+
+企业微信群机器人推送，免费。
+
+1. 使用企业微信，作为群管理员，创建一个群机器人，复制出机器人的 Webhook；
+2. 然后在 Webhook 中提取出 `key` 值，填入 pushoo 的 token 中.
+
+示例 token: `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxx-xxxx-xx` Webhook中提取Token为 `xxxxxxxx-xxxx-xx`;
