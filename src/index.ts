@@ -438,7 +438,7 @@ async function noticeDiscord(options: CommonOptions) {
       headers: { 'Content-Type': 'application/json' },
     },
   );
-  return response.data;
+  return `Delivered successfully, code ${response.status}.`;
 }
 
 async function notice(channel: ChannelType, options: CommonOptions) {
