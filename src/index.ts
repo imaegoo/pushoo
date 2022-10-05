@@ -20,6 +20,13 @@ export interface NoticeOptions {
     value2?: string;
     value3?: string;
   };
+  /**
+   * Discord通知方式的参数配置
+   */
+  discord?: {
+    userName?: string;
+    avatarUrl?: string;
+  };
 }
 export interface CommonOptions {
   token: string;
@@ -47,7 +54,8 @@ export type ChannelType =
   | 'telegram'
   | 'feishu'
   | 'ifttt'
-  | 'wecombot';
+  | 'wecombot'
+  | 'discord';
 
 function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
@@ -410,6 +418,29 @@ async function noticeWecombot(options: CommonOptions) {
   return response.data;
 }
 
+/**
+ * 文档：https://discord.com/developers/docs/resources/webhook#execute-webhook
+ */
+async function noticeDiscord(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const url = options.token.startsWith('https://')
+    ? options.token
+    : `https://discord.com/api/webhooks/${options.token.replace(/#/, '/')}`;
+
+  const response = await axios.post(
+    url,
+    {
+      content: options.content,
+      username: options.options?.discord?.userName,
+      avatar_url: options.options?.discord?.avatarUrl,
+    },
+    {
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
+  return response.data;
+}
+
 async function notice(channel: ChannelType, options: CommonOptions) {
   try {
     let data: any;
@@ -430,6 +461,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       feishu: noticeFeishu,
       ifttt: noticeIfttt,
       wecombot: noticeWecombot,
+      discord: noticeDiscord,
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
@@ -463,4 +495,5 @@ export {
   noticeFeishu,
   noticeIfttt,
   noticeWecombot,
+  noticeDiscord,
 };
