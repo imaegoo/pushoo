@@ -31,10 +31,10 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 - [Telegram](https://core.telegram.org/bots)
 - [飞书](https://www.feishu.cn/hc/zh-CN/articles/360024984973)
 - [IFTTT](https://ifttt.com/maker_webhooks)
+- [Discord](https://discord.com/developers/docs/resources/webhook#execute-webhook)
 
 ## 计划支持的推送平台
 
-- Discord
 - 阿里云短信
 - 腾讯云短信
 - 自定义 Webhook
@@ -69,7 +69,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu`、`ifttt`、`wecombot` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu`、`ifttt`、`wecombot`、`discord` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
@@ -93,6 +93,13 @@ interface NoticeOptions {
     value1?: string
     value2?: string
     value3?: string
+  },
+  /**
+   * Discord通知方式的参数配置
+   */
+  discord?: {
+    userName?: string;
+    avatarUrl?: string;
   }
 }
 ```
@@ -253,3 +260,16 @@ PS: title 和 content 会分别对应 Value1 和 Value2，如果要设置 Value3
 2. 然后在 Webhook 中提取出 `key` 值，填入 pushoo 的 token 中.
 
 示例 token: `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=xxxxxxxx-xxxx-xx` Webhook中提取Token为 `xxxxxxxx-xxxx-xx`;
+
+### 💬 [Discord](https://discord.com/developers/docs/resources/webhook#execute-webhook) <sub>缩写: `discord`</sub>
+
+Discord Webhooks推送，免费。
+
+1. 打开Discord，进入频道设置，找到webhook，点击创建`webhook`；
+2. 复制webhook的url，将整个URL填入pushoo的`token`中。
+3. 如果需要设置用户名和头像，可以在`options`中设置。
+4. token 设置也可以通过提取 `webhook` url 中的 `id` 和 `token` 来设置，格式为 `id#token`。 如：`https://discord.com/api/webhooks/123456789012345678/abcdefghijklmnopqrstuvwxyz`，则 token 设置为 `123456789012345678#abcdefghijklmnopqrstuvwxyz`。
+
+示例 token：
+- `https://discord.com/api/webhooks/123456789012345678/abcdefghijklmnopqrstuvwxyz`
+- `123456789012345678#abcdefghijklmnopqrstuvwxyz`
