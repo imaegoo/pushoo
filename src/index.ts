@@ -503,7 +503,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       ifttt: noticeIfttt,
       wecombot: noticeWecombot,
       discord: noticeDiscord,
-      wxpuser: noticeWxPusher,
+      wxpusher: noticeWxPusher,
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
