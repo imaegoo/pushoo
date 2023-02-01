@@ -27,6 +27,14 @@ export interface NoticeOptions {
     userName?: string;
     avatarUrl?: string;
   };
+  /**
+   * WxPusher通知方式的参数配置
+   */
+  wxpusher?: {
+    uids?: string[];
+    url?: string;
+    verifyPay?: boolean;
+  };
 }
 export interface CommonOptions {
   token: string;
@@ -55,7 +63,8 @@ export type ChannelType =
   | 'feishu'
   | 'ifttt'
   | 'wecombot'
-  | 'discord';
+  | 'discord'
+  | 'wxpusher';
 
 function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
@@ -441,6 +450,38 @@ async function noticeDiscord(options: CommonOptions) {
   return `Delivered successfully, code ${response.status}.`;
 }
 
+/**
+ * WXPusher 推送
+ * 教程：https://wxpusher.zjiecode.com/admin/
+ * 文档: https://wxpusher.zjiecode.com/docs/#/
+ */
+async function noticeWxPusher(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const url = 'http://wxpusher.zjiecode.com/api/send/message';
+  const [appToken, topicIds] = options.token.split('#');
+  checkParameters({ appToken, topicIds }, ['appToken', 'topicIds']);
+
+  const response = await axios.post(
+    url,
+    {
+      appToken,
+      content: options.content,
+      summary: options.title || getTitle(options.content),
+      contentType: 3,
+      topicIds: topicIds.split(',').map((id) => Number(id)),
+      uids: options?.options?.wxpusher?.uids || [],
+      url: options?.options?.wxpusher?.url || '',
+      verifyPayload: options?.options?.wxpusher?.verifyPay || false,
+    },
+    {
+      headers: {
+        'Content-Type': 'application/json',
+      },
+    },
+  );
+  return response.data;
+}
+
 async function notice(channel: ChannelType, options: CommonOptions) {
   try {
     let data: any;
@@ -462,6 +503,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       ifttt: noticeIfttt,
       wecombot: noticeWecombot,
       discord: noticeDiscord,
+      wxpuser: noticeWxPusher,
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
@@ -496,4 +538,5 @@ export {
   noticeIfttt,
   noticeWecombot,
   noticeDiscord,
+  noticeWxPusher,
 };
