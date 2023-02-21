@@ -222,7 +222,6 @@ async function noticeDingTalk(options: CommonOptions) {
   } else if (msgtype === 'markdown') {
     msgBody[msgtype] = { title: options.title || getTitle(options.content), text: content };
   }
-  console.log(msgBody);
   const response = await axios.post(url, msgBody);
   return response.data;
 }

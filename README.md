@@ -110,6 +110,12 @@ interface NoticeOptions {
     url?: string;
     verifyPay?: boolean;
   };
+  dingtalk?: {
+    /**
+     * 消息类型，目前支持 text、markdown。不设置，默认为 text。
+     */
+    msgtype?: string;
+  };
 }
 ```
 
