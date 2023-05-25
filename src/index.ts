@@ -35,6 +35,12 @@ export interface NoticeOptions {
     url?: string;
     verifyPay?: boolean;
   };
+  dingtalk?: {
+    /**
+     * 消息类型，目前支持 text、markdown。不设置，默认为 text。
+     */
+    msgtype?: string;
+  };
 }
 export interface CommonOptions {
   token: string;
@@ -201,14 +207,22 @@ async function noticeDingTalk(options: CommonOptions) {
   } else {
     url += options.token;
   }
-  let content = getTxt(options.content);
-  if (options.title) {
-    content = `${options.title}\n${content}`;
+
+  const msgtype = options.options?.dingtalk?.msgtype || 'text';
+  const content = msgtype === 'text'
+    ? (options.title ? `${options.title}\n` : '') + getTxt(options.content)
+    : options.content;
+
+  const msgBody = {
+    msgtype,
+  };
+
+  if (msgtype === 'text') {
+    msgBody[msgtype] = { content };
+  } else if (msgtype === 'markdown') {
+    msgBody[msgtype] = { title: options.title || getTitle(options.content), text: content };
   }
-  const response = await axios.post(url, {
-    msgtype: 'text',
-    text: { content },
-  });
+  const response = await axios.post(url, msgBody);
   return response.data;
 }
 
