@@ -35,6 +35,15 @@ export interface NoticeOptions {
     url?: string;
     verifyPay?: boolean;
   };
+  /**
+   * QMsg酱通知方式的参数配置
+   */
+  qmsg?: {
+    qq?: string;
+    url?: string;
+    group?: boolean;
+    bot?: string;
+  };
   dingtalk?: {
     /**
      * 消息类型，目前支持 text、markdown。不设置，默认为 text。
@@ -103,7 +112,7 @@ function removeUrlAndIp(content: string) {
  */
 async function noticeQmsg(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  const url = 'https://qmsg.zendee.cn';
+  const url =  options?.options?.qmsg?.url ||'https://qmsg.zendee.cn';
   let msg = getTxt(options.content);
   if (options.title) {
     msg = `${options.title}\n${msg}`;
@@ -111,7 +120,12 @@ async function noticeQmsg(options: CommonOptions) {
   // 移除网址和 IP 以避免 Qmsg 酱被 Tencent 封号
   msg = removeUrlAndIp(msg);
   const param = new URLSearchParams({ msg });
-  const response = await axios.post(`${url}/send/${options.token}`, param.toString(), {
+  const qq = options?.options?.qmsg?.qq || false;
+  qq?param.append('qq', qq):null;
+  const bot = options?.options?.qmsg?.bot || false;
+  bot?param.append('bot', bot):null;
+  const group = options?.options?.qmsg?.group || false;
+  const response = await axios.post(`${url}/${group?'group':'send'}/${options.token}`, param.toString(), {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   });
   return response.data;
