@@ -17,7 +17,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 ## 支持的消息推送平台
 
 - [Qmsg](https://qmsg.zendee.cn/)
-- [Server 酱](https://sct.ftqq.com/)
+- [Server 酱](https://sct.ftqq.com/r/13235)
 - [Push Plus](https://www.pushplus.plus/)
 - [Push Plus Hxtrip](https://pushplus.hxtrip.com/)
 - [钉钉](https://open.dingtalk.com/document/group/custom-robot-access)
@@ -132,11 +132,11 @@ Qmsg 酱是 Zendee 提供的第三方 QQ 消息推送服务，免费，消息以
 
 示例 token：`d3e96b6c50adf28cc6d1bb*****a4613`
 
-### 💬 [Server 酱](https://sct.ftqq.com/) <sub>缩写: `serverchan`</sub>
+### 💬 [Server 酱](https://sct.ftqq.com/r/13235) <sub>缩写: `serverchan`</sub>
 
 Server 酱是方糖提供的第三方多渠道推送服务，以服务号推送起家，稳定运行多年，免费收费并存，特色功能较多。
 
-1. 前往 [https://sct.ftqq.com/](https://sct.ftqq.com/) 并使用微信登录
+1. 前往 [https://sct.ftqq.com/r/13235](https://sct.ftqq.com/r/13235) 并使用微信登录
 2. 点击 “消息通道”，设置合适的消息通道并保存
 2. 点击 “SendKey”，复制 “SendKey” 下方的 key，填入 pushoo 的 token 中
 
