@@ -112,7 +112,7 @@ function removeUrlAndIp(content: string) {
  */
 async function noticeQmsg(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
-  const url =  options?.options?.qmsg?.url ||'https://qmsg.zendee.cn';
+  const url = options?.options?.qmsg?.url || 'https://qmsg.zendee.cn';
   let msg = getTxt(options.content);
   if (options.title) {
     msg = `${options.title}\n${msg}`;
@@ -121,11 +121,15 @@ async function noticeQmsg(options: CommonOptions) {
   msg = removeUrlAndIp(msg);
   const param = new URLSearchParams({ msg });
   const qq = options?.options?.qmsg?.qq || false;
-  qq?param.append('qq', qq):null;
+  if (qq) {
+    param.append('qq', qq);
+  }
   const bot = options?.options?.qmsg?.bot || false;
-  bot?param.append('bot', bot):null;
+  if (bot) {
+    param.append('bot', bot);
+  }
   const group = options?.options?.qmsg?.group || false;
-  const response = await axios.post(`${url}/${group?'group':'send'}/${options.token}`, param.toString(), {
+  const response = await axios.post(`${url}/${group ? 'group' : 'send'}/${options.token}`, param.toString(), {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   });
   return response.data;
