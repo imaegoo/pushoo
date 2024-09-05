@@ -104,7 +104,12 @@ function getTitle(content: string) {
 function removeUrlAndIp(content: string) {
   const urlRegex = /(https?:\/\/[^\s]+)/g;
   const ipRegex = /(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})/g;
-  return content.replace(urlRegex, '').replace(ipRegex, '');
+  // 邮箱正则表达式来自 https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input/email#validation
+  const mailRegExp = /[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,61}[a-zA-Z0-9])?)*/g;
+  return content
+    .replace(urlRegex, '')
+    .replace(ipRegex, '')
+    .replace(mailRegExp, '');
 }
 
 /**
