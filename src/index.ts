@@ -363,7 +363,7 @@ async function noticeTelegram(options: CommonOptions) {
     },
     ['tgToken', 'chatId'],
   );
-  let text = options.content;
+  let text = options.content.replace(/([*_])/g, '\\$1'); // * 和 _ 似乎需要转义，否则会抛出 400 Bad Request 以及消息显示不正常
   if (options.title) {
     text = `${options.title}\n\n${text}`;
   }
