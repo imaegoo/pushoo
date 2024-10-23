@@ -161,25 +161,23 @@ async function noticeAtri(options: CommonOptions) {
 }
 
 /**
- * https://sct.ftqq.com/
+ * Turbo: https://sct.ftqq.com/
+ * V3: https://sc3.ft07.com/
  */
 async function noticeServerChan(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url: string;
-  let param: URLSearchParams;
-  if (options.token.substring(0, 3).toLowerCase() === 'sct') {
+  if (options.token.startsWith('sctp')) {
+    url = `https://${options.token.match(/^sctp(\d+)t/)[1]}.push.ft07.com/send`;
+  } else if (options.token.substring(0, 3).toLowerCase() === 'sct') {
     url = 'https://sctapi.ftqq.com';
-    param = new URLSearchParams({
-      title: options.title || getTitle(options.content),
-      desp: options.content,
-    });
   } else {
     url = 'https://sc.ftqq.com';
-    param = new URLSearchParams({
-      text: options.title || getTitle(options.content),
-      desp: options.content,
-    });
   }
+  const param: URLSearchParams = new URLSearchParams({
+    text: options.title || getTitle(options.content),
+    desp: options.content,
+  });
   const response = await axios.post(`${url}/${options.token}.send`, param.toString(), {
     headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
   });
