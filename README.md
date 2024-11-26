@@ -196,7 +196,7 @@ Bark 是 iOS 通知中心推送工具，可以推送消息到苹果手机上，�
 1. 下载 [Bark APP](https://apps.apple.com/cn/app/bark-%E7%BB%99%E4%BD%A0%E7%9A%84%E6%89%8B%E6%9C%BA%E5%8F%91%E6%8E%A8%E9%80%81/id1403753865)
 2. 轻触下方 “服务器”，复制第一个服务器地址，删除 “这里改成你自己的推送内容” 字样，填入 pushoo 的 token 中
 
-示例 token：`https://api.day.app/q2S4vQqpNyaS*****9neeJ/`（完整的 URL）或者 `q2S4vQqpNyaS*****9neeJ`（只保留 token）
+示例 token：`https://api.day.app/q2S4vQqpNyaS*****9neeJ/`（完整的 URL）`https://api.day.app/q2S4vQqpNyaS*****9neeJ/?icon=https://example.com/icon.png&group=twikoo`（带有参数的URL）或 `q2S4vQqpNyaS*****9neeJ`（只保留 token）
 
 ### 💬 [go-cqhttp](https://docs.go-cqhttp.org/api/) <sub>缩写: `gocqhttp`</sub>
 
