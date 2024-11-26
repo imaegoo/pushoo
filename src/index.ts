@@ -304,8 +304,11 @@ async function noticeWeCom(options: CommonOptions) {
 async function noticeBark(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   let url = 'https://api.day.app/';
+  let urlParams = new URLSearchParams();
   if (options.token.substring(0, 4).toLowerCase() === 'http') {
-    url = options.token;
+    const urlObj = new URL(options.token);
+    url = urlObj.origin + urlObj.pathname;
+    urlParams = new URLSearchParams(urlObj.search);
   } else {
     url += options.token;
   }
@@ -313,7 +316,13 @@ async function noticeBark(options: CommonOptions) {
   const title = encodeURIComponent(options.title || getTitle(options.content));
   const content = encodeURIComponent(getTxt(options.content));
   const params = new URLSearchParams({
-    url: options?.options?.bark?.url || '',
+    url: options?.options?.bark?.url || urlParams.get('url') || '',
+  });
+  // 合并其他参数
+  urlParams.forEach((value, key) => {
+    if (key !== 'url') {
+      params.append(key, value);
+    }
   });
   const response = await axios.get(`${url}${title}/${content}/`, { params });
   return response.data;
