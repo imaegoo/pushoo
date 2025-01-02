@@ -570,7 +570,7 @@ async function noticeWebhook(options: CommonOptions) {
     {
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
-        'X-API-token': token,
+        'X-API-Token': token,
       },
     }
   );
