@@ -454,13 +454,14 @@ async function noticeIfttt(options: CommonOptions) {
 async function noticeWecombot(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const url = `https://qyapi.weixin.qq.com/cgi-bin/webhook/send?key=${options.token}`;
+  const content = getTxt(options.content);
 
   const response = await axios.post(
     url,
     {
-      msgtype: 'markdown',
-      markdown: {
-        content: options.content,
+      msgtype: 'text',
+      text: {
+        content,
       },
     },
     {
