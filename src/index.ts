@@ -461,7 +461,7 @@ async function noticeWecombot(options: CommonOptions) {
     {
       msgtype: 'text',
       text: {
-        content: content,
+        content,
       },
     },
     {
