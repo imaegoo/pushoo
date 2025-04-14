@@ -79,7 +79,8 @@ export type ChannelType =
   | 'ifttt'
   | 'wecombot'
   | 'discord'
-  | 'wxpusher';
+  | 'wxpusher'
+  | 'join';
 
 function checkParameters(options: any, requires: string[] = []) {
   requires.forEach((require) => {
@@ -527,6 +528,30 @@ async function noticeWxPusher(options: CommonOptions) {
   return response.data;
 }
 
+/**
+ * Join 推送
+ * 文档: https://joaoapps.com/join/api/
+ */
+async function noticeJoin(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+  const [apiKey, deviceId] = options.token.split('#');
+  checkParameters({ apiKey, deviceId }, ['apiKey', 'deviceId']);
+
+  let url: string;
+  let param: URLSearchParams;
+  url = `https://joinjoaomgcd.appspot.com/_ah/api/messaging/v1/sendPush`;
+  param = new URLSearchParams({
+    apikey: apiKey,
+    deviceId: deviceId,
+    title: options.title || getTitle(options.content),
+    text: options.content,
+  });
+  const response = await axios.post(url, param.toString(), {
+    headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+  });
+  return response.data;
+}
+
 async function notice(channel: ChannelType, options: CommonOptions) {
   try {
     let data: any;
@@ -549,6 +574,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       wecombot: noticeWecombot,
       discord: noticeDiscord,
       wxpusher: noticeWxPusher,
+      join: noticeJoin,
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
@@ -584,4 +610,5 @@ export {
   noticeWecombot,
   noticeDiscord,
   noticeWxPusher,
+  noticeJoin,
 };
