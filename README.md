@@ -33,6 +33,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 - [IFTTT](https://ifttt.com/maker_webhooks)
 - [Discord](https://discord.com/developers/docs/resources/webhook#execute-webhook)
 - [WxPusher](https://wxpusher.zjiecode.com/docs/#/)
+- [Join](https://joaoapps.com/join/)
 
 ## 计划支持的推送平台
 
@@ -302,3 +303,9 @@ WxPusher 是一款微信推送平台，免费。
 示例 token:
 - 单个主题ID：`AT_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX#1234`
 - 多个主题ID：`AT_XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX#1234,5678`
+
+### 💬 [Join](https://joaoapps.com/join/) <sub>缩写: `join`</sub>
+
+<!-- TODO -->
+
+示例 token: `apiKey#deviceId`

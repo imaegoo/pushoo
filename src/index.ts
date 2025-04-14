@@ -537,12 +537,10 @@ async function noticeJoin(options: CommonOptions) {
   const [apiKey, deviceId] = options.token.split('#');
   checkParameters({ apiKey, deviceId }, ['apiKey', 'deviceId']);
 
-  let url: string;
-  let param: URLSearchParams;
-  url = `https://joinjoaomgcd.appspot.com/_ah/api/messaging/v1/sendPush`;
-  param = new URLSearchParams({
+  const url = 'https://joinjoaomgcd.appspot.com/_ah/api/messaging/v1/sendPush';
+  const param = new URLSearchParams({
     apikey: apiKey,
-    deviceId: deviceId,
+    deviceId,
     title: options.title || getTitle(options.content),
     text: options.content,
   });
