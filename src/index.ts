@@ -44,6 +44,21 @@ export interface NoticeOptions {
     group?: boolean;
     bot?: string;
   };
+  onebot?: {
+    /**
+     * 群号（群发时必填）
+     */
+    group_id?: number;
+    /**
+     * QQ号（私聊时必填）
+     */
+    user_id?: number;
+    /**
+     * 消息类型（group/private）
+     */
+    message_type?: string;
+    access_token?: string; 
+  };
   dingtalk?: {
     /**
      * 消息类型，目前支持 text、markdown。不设置，默认为 text。
@@ -71,6 +86,7 @@ export type ChannelType =
   | 'wecom'
   | 'bark'
   | 'gocqhttp'
+  | 'onebot'
   | 'atri'
   | 'pushdeer'
   | 'igot'
@@ -336,6 +352,86 @@ async function noticeGoCqhttp(options: CommonOptions) {
   return response.data;
 }
 
+/**
+ * 文档: https://github.com/botuniverse/onebot-11
+ * 教程: https://ayakasuki.com/
+ */
+async function noticeNodeOnebot(options: CommonOptions) {
+  checkParameters(options, ['token', 'content']);
+
+  try {
+    // 1. 解析完整URL（包含action和参数）
+    const fullUrl = options.token;
+    const urlObj = new URL(fullUrl);
+    const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
+    
+    // 2. 从URL路径提取action类型
+    const actionPath = urlObj.pathname.split('/').pop() || '';
+    let action: string;
+    
+    // 自动识别动作类型（群发/私聊）
+    if (actionPath.includes('group')) {
+      action = 'send_group_msg';
+    } else if (actionPath.includes('private')) {
+      action = 'send_private_msg';
+    } else {
+      action = actionPath; // 保留原始action
+    }
+
+    // 3. 从URL查询参数获取关键数据
+    const urlParams = new URLSearchParams(urlObj.search);
+    const accessToken = urlParams.get('access_token') || '';
+    const groupId = urlParams.get('group_id');
+    const userId = urlParams.get('user_id');
+    
+    // 4. 构建消息参数（优先级：URL参数 > 配置参数）
+    const params: Record<string, any> = {
+      message: options.title 
+        ? `${options.title}\n${getTxt(options.content)}` 
+        : getTxt(options.content)
+    };
+
+    // 根据参数类型设置目标
+    if (groupId) {
+      params.group_id = Number(groupId);
+    } else if (userId) {
+      params.user_id = Number(userId);
+    } else if (options?.options?.onebot?.group_id) {
+      params.group_id = Number(options.options.onebot.group_id);
+    } else if (options?.options?.onebot?.user_id) {
+      params.user_id = Number(options.options.onebot.user_id);
+    } else {
+      throw new Error('OneBot 必须提供 group_id 或 user_id');
+    }
+
+    // 5. 构建最终请求URL（保留原始路径结构）
+    const apiUrl = `${baseUrl}/${actionPath}`;
+    
+    // 6. 发送HTTP请求
+    const response = await axios.post(apiUrl, params, {
+      timeout: 5000,
+      headers: { 
+        'Content-Type': 'application/json',
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
+      }
+    });
+
+    // 7. 处理OneBot响应
+    if (response.data?.retcode !== 0) {
+      throw new Error(`[${response.data.retcode}] ${response.data.message}`);
+    }
+    
+    return response.data;
+  } catch (e) {
+    // 增强错误日志（包含原始URL）
+    console.error('[ONEBOT] 请求失败:', {
+      originalUrl: options.token,
+      error: e.response?.data || e.message
+    });
+    throw new Error(`OneBot推送失败: ${e.message}`);
+  }
+}
+
 async function noticePushdeer(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
   const url = 'https://api2.pushdeer.com/message/push';
@@ -563,6 +659,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       wecom: noticeWeCom,
       bark: noticeBark,
       gocqhttp: noticeGoCqhttp,
+      onebot:noticeNodeOnebot,
       atri: noticeAtri,
       pushdeer: noticePushdeer,
       igot: noticeIgot,
@@ -599,6 +696,7 @@ export {
   noticeWeCom,
   noticeBark,
   noticeGoCqhttp,
+  noticeNodeOnebot,
   noticeAtri,
   noticePushdeer,
   noticeIgot,
