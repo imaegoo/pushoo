@@ -57,7 +57,7 @@ export interface NoticeOptions {
      * 消息类型（group/private）
      */
     message_type?: string;
-    access_token?: string; 
+    access_token?: string;
   };
   dingtalk?: {
     /**
@@ -364,11 +364,11 @@ async function noticeNodeOnebot(options: CommonOptions) {
     const fullUrl = options.token;
     const urlObj = new URL(fullUrl);
     const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
-    
+
     // 2. 从URL路径提取action类型
     const actionPath = urlObj.pathname.split('/').pop() || '';
     let action: string;
-    
+
     // 自动识别动作类型（群发/私聊）
     if (actionPath.includes('group')) {
       action = 'send_group_msg';
@@ -383,12 +383,12 @@ async function noticeNodeOnebot(options: CommonOptions) {
     const accessToken = urlParams.get('access_token') || '';
     const groupId = urlParams.get('group_id');
     const userId = urlParams.get('user_id');
-    
+
     // 4. 构建消息参数（优先级：URL参数 > 配置参数）
     const params: Record<string, any> = {
-      message: options.title 
-        ? `${options.title}\n${getTxt(options.content)}` 
-        : getTxt(options.content)
+      message: options.title
+        ? `${options.title}\n${getTxt(options.content)}`
+        : getTxt(options.content),
     };
 
     // 根据参数类型设置目标
@@ -406,27 +406,27 @@ async function noticeNodeOnebot(options: CommonOptions) {
 
     // 5. 构建最终请求URL（保留原始路径结构）
     const apiUrl = `${baseUrl}/${actionPath}`;
-    
+
     // 6. 发送HTTP请求
     const response = await axios.post(apiUrl, params, {
       timeout: 5000,
-      headers: { 
+      headers: {
         'Content-Type': 'application/json',
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
-      }
+        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
+      },
     });
 
     // 7. 处理OneBot响应
     if (response.data?.retcode !== 0) {
       throw new Error(`[${response.data.retcode}] ${response.data.message}`);
     }
-    
+
     return response.data;
   } catch (e) {
     // 增强错误日志（包含原始URL）
     console.error('[ONEBOT] 请求失败:', {
       originalUrl: options.token,
-      error: e.response?.data || e.message
+      error: e.response?.data || e.message,
     });
     throw new Error(`OneBot推送失败: ${e.message}`);
   }
@@ -659,7 +659,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       wecom: noticeWeCom,
       bark: noticeBark,
       gocqhttp: noticeGoCqhttp,
-      onebot:noticeNodeOnebot,
+      onebot: noticeNodeOnebot,
       atri: noticeAtri,
       pushdeer: noticePushdeer,
       igot: noticeIgot,
