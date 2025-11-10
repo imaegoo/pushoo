@@ -4,6 +4,19 @@ import markdownToTxt from 'markdown-to-txt';
 
 export interface NoticeOptions {
   /**
+   * Webhook通知方式的参数配置
+   */
+  webhook?: {
+    /**
+     * url 发送通知的地址
+     */
+    url: string;
+    /**
+     * method 请求方法，默认为 POST
+     */
+    method?: 'GET' | 'POST';
+  };
+  /**
    * bark通知方式的参数配置
    */
   bark?: {
@@ -77,6 +90,7 @@ export interface CommonOptions {
 }
 
 export type ChannelType =
+  | 'webhook'
   | 'qmsg'
   | 'serverchan'
   | 'serverchain'
@@ -127,6 +141,37 @@ function removeUrlAndIp(content: string) {
     .replace(urlRegex, '')
     .replace(ipRegex, '')
     .replace(mailRegExp, '');
+}
+
+/**
+ * 自定义 Webhook 推送
+ */
+async function noticeWebhook(options: CommonOptions) {
+  checkParameters(options, ['content']);
+  const method = options?.options?.webhook?.method || 'POST';
+  const url = options?.options?.webhook?.url;
+  if (!url) {
+    throw new Error('Webhook url is required');
+  }
+  if (method === 'GET') {
+    const params = new URLSearchParams({
+      ...(options.token ? { token: options.token } : {}),
+      ...(options.title ? { title: options.title } : {}),
+      content: options.content,
+    });
+    const response = await axios.get(url, { params });
+    return response.data;
+  }
+  if (method === 'POST') {
+    const payload: Record<string, any> = {
+      ...(options.token && { token: options.token }),
+      ...(options.title && { title: options.title }),
+      content: options.content,
+    };
+    const response = await axios.post(url, payload);
+    return response.data;
+  }
+  throw new Error(`Unsupported Webhook request method: ${method}`);
 }
 
 /**
@@ -646,10 +691,11 @@ async function noticeJoin(options: CommonOptions) {
   return response.data;
 }
 
-async function notice(channel: ChannelType, options: CommonOptions) {
+async function notice(channel: ChannelType | string, options: CommonOptions) {
   try {
     let data: any;
     const noticeFn = {
+      webhook: noticeWebhook,
       qmsg: noticeQmsg,
       serverchan: noticeServerChan,
       serverchain: noticeServerChan,
@@ -673,6 +719,15 @@ async function notice(channel: ChannelType, options: CommonOptions) {
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
+    } else if (typeof channel === 'string' && (channel.startsWith('http://') || channel.startsWith('https://'))) {
+      options.options = options.options || {};
+      options.options.webhook = { url: channel };
+      if (channel.endsWith(':GET')) {
+        // hack: 如果 URL 以 :GET 结尾，则使用 GET 方法
+        options.options.webhook.method = 'GET';
+        options.options.webhook.url = channel.slice(0, -4);
+      }
+      data = await noticeWebhook(options);
     } else {
       throw new Error(`<${channel}> is not supported`);
     }
