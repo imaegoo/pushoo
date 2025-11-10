@@ -148,8 +148,8 @@ function removeUrlAndIp(content: string) {
  */
 async function noticeWebhook(options: CommonOptions) {
   checkParameters(options, ['content']);
-  let method = options?.options?.webhook?.method || 'POST';
-  let url = options?.options?.webhook?.url;
+  const method = options?.options?.webhook?.method || 'POST';
+  const url = options?.options?.webhook?.url;
   if (!url) {
     throw new Error('Webhook url is required');
   }
@@ -161,7 +161,8 @@ async function noticeWebhook(options: CommonOptions) {
     });
     const response = await axios.get(url, { params });
     return response.data;
-  } else if (method === 'POST') {
+  }
+  if (method === 'POST') {
     const payload: Record<string, any> = {
       ...(options.token && { token: options.token }),
       ...(options.title && { title: options.title }),
@@ -169,9 +170,8 @@ async function noticeWebhook(options: CommonOptions) {
     };
     const response = await axios.post(url, payload);
     return response.data;
-  } else {
-    throw new Error(`Unsupported Webhook request method: ${method}`);
   }
+  throw new Error(`Unsupported Webhook request method: ${method}`);
 }
 
 /**
