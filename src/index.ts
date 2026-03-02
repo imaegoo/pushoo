@@ -405,74 +405,38 @@ async function noticeNodeOnebot(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
 
   try {
-    // 1. 解析完整URL（包含action和参数）
-    const fullUrl = options.token;
-    const urlObj = new URL(fullUrl);
-    const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
+    const urlObj = new URL(options.token);
+    const searchParams = urlObj.searchParams;
 
-    // 2. 从URL路径提取action类型
-    const actionPath = urlObj.pathname.split('/').pop() || '';
-    let action: string;
+    const groupId = searchParams.get('group_id');
+    const userId = searchParams.get('user_id');
+    
+    searchParams.delete('group_id');
+    searchParams.delete('user_id');
 
-    // 自动识别动作类型（群发/私聊）
-    if (actionPath.includes('group')) {
-      action = 'send_group_msg';
-    } else if (actionPath.includes('private')) {
-      action = 'send_private_msg';
-    } else {
-      action = actionPath; // 保留原始action
-    }
+    const apiUrl = urlObj.toString();
 
-    // 3. 从URL查询参数获取关键数据
-    const urlParams = new URLSearchParams(urlObj.search);
-    const accessToken = urlParams.get('access_token') || '';
-    const groupId = urlParams.get('group_id');
-    const userId = urlParams.get('user_id');
-
-    // 4. 构建消息参数（优先级：URL参数 > 配置参数）
-    const params: Record<string, any> = {
-      message: options.title
-        ? `${options.title}\n${getTxt(options.content)}`
+    const body: Record<string, any> = {
+      message: options.title 
+        ? `${options.title}\n${getTxt(options.content)}` 
         : getTxt(options.content),
     };
 
-    // 根据参数类型设置目标
-    if (groupId) {
-      params.group_id = Number(groupId);
-    } else if (userId) {
-      params.user_id = Number(userId);
-    } else if (options?.options?.onebot?.group_id) {
-      params.group_id = Number(options.options.onebot.group_id);
-    } else if (options?.options?.onebot?.user_id) {
-      params.user_id = Number(options.options.onebot.user_id);
-    } else {
-      throw new Error('OneBot 必须提供 group_id 或 user_id');
-    }
+    if (groupId) body.group_id = Number(groupId);
+    if (userId) body.user_id = Number(userId);
 
-    // 5. 构建最终请求URL（保留原始路径结构）
-    const apiUrl = `${baseUrl}/${actionPath}`;
-
-    // 6. 发送HTTP请求
-    const response = await axios.post(apiUrl, params, {
+    const response = await axios.post(apiUrl, body, {
       timeout: 5000,
-      headers: {
-        'Content-Type': 'application/json',
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {}),
-      },
+      headers: { 'Content-Type': 'application/json' },
     });
 
-    // 7. 处理OneBot响应
     if (response.data?.retcode !== 0) {
-      throw new Error(`[${response.data.retcode}] ${response.data.message}`);
+      throw new Error(`[${response.data.retcode}] ${response.data.status || 'Unknown Error'}`);
     }
 
     return response.data;
-  } catch (e) {
-    // 增强错误日志（包含原始URL）
-    console.error('[ONEBOT] 请求失败:', {
-      originalUrl: options.token,
-      error: e.response?.data || e.message,
-    });
+  } catch (e: any) {
+    console.error('[ONEBOT] 推送失败:', e.response?.data || e.message);
     throw new Error(`OneBot推送失败: ${e.message}`);
   }
 }
