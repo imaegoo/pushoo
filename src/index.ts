@@ -4,6 +4,19 @@ import markdownToTxt from 'markdown-to-txt';
 
 export interface NoticeOptions {
   /**
+   * Webhook通知方式的参数配置
+   */
+  webhook?: {
+    /**
+     * url 发送通知的地址
+     */
+    url: string;
+    /**
+     * method 请求方法，默认为 POST
+     */
+    method?: 'GET' | 'POST';
+  };
+  /**
    * bark通知方式的参数配置
    */
   bark?: {
@@ -57,7 +70,7 @@ export interface NoticeOptions {
      * 消息类型（group/private）
      */
     message_type?: string;
-    access_token?: string; 
+    access_token?: string;
   };
   dingtalk?: {
     /**
@@ -77,6 +90,7 @@ export interface CommonOptions {
 }
 
 export type ChannelType =
+  | 'webhook'
   | 'qmsg'
   | 'serverchan'
   | 'serverchain'
@@ -127,6 +141,37 @@ function removeUrlAndIp(content: string) {
     .replace(urlRegex, '')
     .replace(ipRegex, '')
     .replace(mailRegExp, '');
+}
+
+/**
+ * 自定义 Webhook 推送
+ */
+async function noticeWebhook(options: CommonOptions) {
+  checkParameters(options, ['content']);
+  const method = options?.options?.webhook?.method || 'POST';
+  const url = options?.options?.webhook?.url;
+  if (!url) {
+    throw new Error('Webhook url is required');
+  }
+  if (method === 'GET') {
+    const params = new URLSearchParams({
+      ...(options.token ? { token: options.token } : {}),
+      ...(options.title ? { title: options.title } : {}),
+      content: options.content,
+    });
+    const response = await axios.get(url, { params });
+    return response.data;
+  }
+  if (method === 'POST') {
+    const payload: Record<string, any> = {
+      ...(options.token && { token: options.token }),
+      ...(options.title && { title: options.title }),
+      content: options.content,
+    };
+    const response = await axios.post(url, payload);
+    return response.data;
+  }
+  throw new Error(`Unsupported Webhook request method: ${method}`);
 }
 
 /**
@@ -360,74 +405,38 @@ async function noticeNodeOnebot(options: CommonOptions) {
   checkParameters(options, ['token', 'content']);
 
   try {
-    // 1. 解析完整URL（包含action和参数）
-    const fullUrl = options.token;
-    const urlObj = new URL(fullUrl);
-    const baseUrl = `${urlObj.protocol}//${urlObj.host}`;
-    
-    // 2. 从URL路径提取action类型
-    const actionPath = urlObj.pathname.split('/').pop() || '';
-    let action: string;
-    
-    // 自动识别动作类型（群发/私聊）
-    if (actionPath.includes('group')) {
-      action = 'send_group_msg';
-    } else if (actionPath.includes('private')) {
-      action = 'send_private_msg';
-    } else {
-      action = actionPath; // 保留原始action
-    }
+    const urlObj = new URL(options.token);
+    const searchParams = urlObj.searchParams;
 
-    // 3. 从URL查询参数获取关键数据
-    const urlParams = new URLSearchParams(urlObj.search);
-    const accessToken = urlParams.get('access_token') || '';
-    const groupId = urlParams.get('group_id');
-    const userId = urlParams.get('user_id');
+    const groupId = searchParams.get('group_id');
+    const userId = searchParams.get('user_id');
     
-    // 4. 构建消息参数（优先级：URL参数 > 配置参数）
-    const params: Record<string, any> = {
+    searchParams.delete('group_id');
+    searchParams.delete('user_id');
+
+    const apiUrl = urlObj.toString();
+
+    const body: Record<string, any> = {
       message: options.title 
         ? `${options.title}\n${getTxt(options.content)}` 
-        : getTxt(options.content)
+        : getTxt(options.content),
     };
 
-    // 根据参数类型设置目标
-    if (groupId) {
-      params.group_id = Number(groupId);
-    } else if (userId) {
-      params.user_id = Number(userId);
-    } else if (options?.options?.onebot?.group_id) {
-      params.group_id = Number(options.options.onebot.group_id);
-    } else if (options?.options?.onebot?.user_id) {
-      params.user_id = Number(options.options.onebot.user_id);
-    } else {
-      throw new Error('OneBot 必须提供 group_id 或 user_id');
-    }
+    if (groupId) body.group_id = Number(groupId);
+    if (userId) body.user_id = Number(userId);
 
-    // 5. 构建最终请求URL（保留原始路径结构）
-    const apiUrl = `${baseUrl}/${actionPath}`;
-    
-    // 6. 发送HTTP请求
-    const response = await axios.post(apiUrl, params, {
+    const response = await axios.post(apiUrl, body, {
       timeout: 5000,
-      headers: { 
-        'Content-Type': 'application/json',
-        ...(accessToken ? { Authorization: `Bearer ${accessToken}` } : {})
-      }
+      headers: { 'Content-Type': 'application/json' },
     });
 
-    // 7. 处理OneBot响应
     if (response.data?.retcode !== 0) {
-      throw new Error(`[${response.data.retcode}] ${response.data.message}`);
+      throw new Error(`[${response.data.retcode}] ${response.data.status || 'Unknown Error'}`);
     }
-    
+
     return response.data;
-  } catch (e) {
-    // 增强错误日志（包含原始URL）
-    console.error('[ONEBOT] 请求失败:', {
-      originalUrl: options.token,
-      error: e.response?.data || e.message
-    });
+  } catch (e: any) {
+    console.error('[ONEBOT] 推送失败:', e.response?.data || e.message);
     throw new Error(`OneBot推送失败: ${e.message}`);
   }
 }
@@ -646,10 +655,11 @@ async function noticeJoin(options: CommonOptions) {
   return response.data;
 }
 
-async function notice(channel: ChannelType, options: CommonOptions) {
+async function notice(channel: ChannelType | string, options: CommonOptions) {
   try {
     let data: any;
     const noticeFn = {
+      webhook: noticeWebhook,
       qmsg: noticeQmsg,
       serverchan: noticeServerChan,
       serverchain: noticeServerChan,
@@ -659,7 +669,7 @@ async function notice(channel: ChannelType, options: CommonOptions) {
       wecom: noticeWeCom,
       bark: noticeBark,
       gocqhttp: noticeGoCqhttp,
-      onebot:noticeNodeOnebot,
+      onebot: noticeNodeOnebot,
       atri: noticeAtri,
       pushdeer: noticePushdeer,
       igot: noticeIgot,
@@ -673,6 +683,15 @@ async function notice(channel: ChannelType, options: CommonOptions) {
     }[channel.toLowerCase()];
     if (noticeFn) {
       data = await noticeFn(options);
+    } else if (typeof channel === 'string' && (channel.startsWith('http://') || channel.startsWith('https://'))) {
+      options.options = options.options || {};
+      options.options.webhook = { url: channel };
+      if (channel.endsWith(':GET')) {
+        // hack: 如果 URL 以 :GET 结尾，则使用 GET 方法
+        options.options.webhook.method = 'GET';
+        options.options.webhook.url = channel.slice(0, -4);
+      }
+      data = await noticeWebhook(options);
     } else {
       throw new Error(`<${channel}> is not supported`);
     }

@@ -16,6 +16,7 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 
 ## 支持的消息推送平台
 
+- Webhook
 - [Qmsg](https://qmsg.zendee.cn/)
 - [Server 酱](https://sct.ftqq.com/r/13235)
 - [Push Plus](https://www.pushplus.plus/)
@@ -39,7 +40,6 @@ Twikoo 评论系统对不同的消息推送平台做了大量的适配工作，�
 
 - 阿里云短信
 - 腾讯云短信
-- 自定义 Webhook
 
 ## 使用方法
 
@@ -71,7 +71,7 @@ console.log(result);
 
 | 参数 | 必填 | 默认 | 说明 |
 | ---- | ---- | ---- | ---- |
-| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu`、`ifttt`、`wecombot`、`discord`, `wxpusher` |
+| 平台名称 | ✅ | 无 | 字符串，平台名称的缩写，支持：`webhook`、`qmsg`、`serverchan`、`pushplus`、`pushplushxtrip`、`dingtalk`、`wecom`、`bark`、`gocqhttp`、`atri`、`pushdeer`、`igot`、`telegram`、`feishu`、`ifttt`、`wecombot`、`discord`, `wxpusher` |
 | token | ✅ | 无 | 平台用户身份标识，通常情况下是一串数字和字母组合，详情和示例见下方详细说明 |
 | title | | 内容第一行 | 可选，消息标题，如果推送平台不支持消息标题，则会拼接在正文首行 |
 | content | ✅ | 无 | Markdown 格式的推送内容，如果推送平台不支持 Markdown，pushoo 会自动转换成支持的格式 |
@@ -79,6 +79,19 @@ console.log(result);
 
 ```typescript
 interface NoticeOptions {
+  /**
+   * webhook通知方式的参数配置
+   */
+  webhook?: {
+    /**
+     * url 发送通知的地址
+     */
+    url: string;
+    /**
+     * method 请求方法，默认为 POST
+     */
+    method?: 'GET' | 'POST';
+  };
   /**
    * bark通知方式的参数配置
    */
@@ -121,6 +134,38 @@ interface NoticeOptions {
 ```
 
 ## 详细说明
+
+### 💬 Webhook <sub>缩写: `webhook`</sub>
+
+Webhook 是一种用户定义的 HTTP 回调，通常用于将实时数据推送到指定的 URL。pushoo 可以通过 Webhook 方式将消息推送到你自定义的后端。
+
+示例调用：
+
+```js
+let respond = await pushoo('webhook', {
+  token: '', // 可选，暂不支持签名
+  title: '', // 可选
+  content: '推送内容',
+  options: {
+    webhook: {
+      url: 'https://example.com/webhook-endpoint',
+      method: 'POST' // 可选，默认为 POST，也可以设置为 GET
+    }
+  }
+});
+```
+
+特别地，为兼容 Twikoo 中现有的使用方式，可以直接把平台名称设置为 Webhook 的 URL 地址（以 `http://` 或 `https://` 开头），无需传入 `options`。
+
+```js
+let respond = await pushoo('https://example.com/webhook-endpoint', {
+  token: '', // 可选
+  title: '', // 可选
+  content: '推送内容'
+});
+```
+
+此时如果 URL 的末尾为 `:GET` 则使用 GET 方法发送请求（实际 URL 自动去掉 `:GET`），否则默认使用 POST 方法发送请求。
 
 ### 💬 [Qmsg](https://qmsg.zendee.cn/) <sub>缩写: `qmsg`</sub>
 
