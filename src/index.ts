@@ -406,19 +406,19 @@ async function noticeNodeOnebot(options: CommonOptions) {
 
   try {
     const urlObj = new URL(options.token);
-    const searchParams = urlObj.searchParams;
+    const { searchParams } = urlObj;
 
     const groupId = searchParams.get('group_id');
     const userId = searchParams.get('user_id');
-    
+
     searchParams.delete('group_id');
     searchParams.delete('user_id');
 
     const apiUrl = urlObj.toString();
 
     const body: Record<string, any> = {
-      message: options.title 
-        ? `${options.title}\n${getTxt(options.content)}` 
+      message: options.title
+        ? `${options.title}\n${getTxt(options.content)}`
         : getTxt(options.content),
     };
 
