@@ -253,7 +253,7 @@ go-cqhttp 是开源 QQ 机器人程序，免费，需自行搭建，插件十分
 3. 修改配置文件，配置 `default-middlewares` 下面的 `access-token`，启动 go-cqhttp
 4. 按照示例所示的 API 调用地址，填入 pushoo 的 token 中
 
-示例 token：`http://你的IP或域名:端口号/send_private_msg?user_id=QQ号&token=你配置的token`（QQ号）或 `http://你的IP或域名:端口号/send_group_msg?group_id=群号&token=你配置的token`（QQ群）
+示例 token：`http://你的IP或域名:端口号/send_private_msg?user_id=QQ号&access_token=你配置的token`（QQ号）或 `http://你的IP或域名:端口号/send_group_msg?group_id=群号&access_token=你配置的token`（QQ群）
 
 ### 💬 [atri](https://github.com/TIANLI0/push-bot-api/) <sub>缩写: `atri`</sub>
 
