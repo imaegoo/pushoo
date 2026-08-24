@@ -1,6 +1,6 @@
 import axios from 'axios';
-import { marked } from 'marked';
-import markdownToTxt from 'markdown-to-txt';
+
+const removeMarkdown = require('remove-markdown');
 
 export interface NoticeOptions {
   /**
@@ -95,7 +95,6 @@ export type ChannelType =
   | 'serverchan'
   | 'serverchain'
   | 'pushplus'
-  | 'pushplushxtrip'
   | 'dingtalk'
   | 'wecom'
   | 'bark'
@@ -120,12 +119,8 @@ function checkParameters(options: any, requires: string[] = []) {
   });
 }
 
-function getHtml(content: string) {
-  return marked.parse(content);
-}
-
 function getTxt(content: string) {
-  return markdownToTxt(content);
+  return removeMarkdown(content).trim();
 }
 
 function getTitle(content: string) {
@@ -266,22 +261,6 @@ async function noticePushPlus(options: CommonOptions) {
     title: options.title || getTitle(options.content),
     content: options.content,
     template: 'markdown',
-  };
-  const response = await axios.post(ppApiUrl, ppApiParam);
-  return response.data;
-}
-
-/**
- * https://pushplus.hxtrip.com/
- */
-async function noticePushPlusHxtrip(options: CommonOptions) {
-  checkParameters(options, ['token', 'content']);
-  const ppApiUrl = 'http://pushplus.hxtrip.com/send';
-  const ppApiParam = {
-    token: options.token,
-    title: options.title || getTitle(options.content),
-    content: getHtml(options.content),
-    template: 'html',
   };
   const response = await axios.post(ppApiUrl, ppApiParam);
   return response.data;
@@ -664,7 +643,6 @@ async function notice(channel: ChannelType | string, options: CommonOptions) {
       serverchan: noticeServerChan,
       serverchain: noticeServerChan,
       pushplus: noticePushPlus,
-      pushplushxtrip: noticePushPlusHxtrip,
       dingtalk: noticeDingTalk,
       wecom: noticeWeCom,
       bark: noticeBark,
@@ -710,7 +688,6 @@ export {
   noticeQmsg,
   noticeServerChan,
   noticePushPlus,
-  noticePushPlusHxtrip,
   noticeDingTalk,
   noticeWeCom,
   noticeBark,
